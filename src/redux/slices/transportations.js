@@ -1,0 +1,143 @@
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import axios from "../../utils/axios";
+
+export const fetchTransportations = createAsyncThunk(
+  "cargos/fetchTransportations",
+  async (KOD) => {
+    try {
+      const { data } = await axios.post("/transportation",{KOD});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const fetchZap = createAsyncThunk(
+  "cargos/fetchZap",
+  async (KOD_OS) => {
+    try {
+      const { data } = await axios.post("/zap", {KOD_OS});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const fetchZapById = createAsyncThunk(
+  "cargos/fetchZapById",
+  async (id) => {
+    try {
+      const data = await axios.get(`/zap/${id}`);
+      if (data.status === 200) {
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const fetchGroups = createAsyncThunk(
+  "cargos/fetchGroups",
+  async (kod) => {
+    try {
+      const data = await axios.post(`/zap/groups`, { kod: kod });
+      if (data.status === 200) {
+        return data.data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const fetchMyZap = createAsyncThunk(
+  "cargos/fetchGroups",
+  async (kod) => {
+    const { data } = await axios.post(`/zap/groups`, { kod: kod });
+    return data;
+  }
+);
+
+const initialState = {
+  transportation: {
+    items: [],
+    groups: [],
+    loading: "loading",
+  },
+};
+const transportationSlice = createSlice({
+  name: "transportation",
+  initialState,
+  reducers: {
+    addReduxZap: (state, action) => {
+      state.zap.items = [...state.zap.items, action.payload];
+    },
+    changeCommentsCount: (state, action) => {
+      const id = action.payload;
+      const counterComm = state.zap.items.find((item) => item.KOD === id);
+      if (counterComm) {
+        counterComm.COUNTCOMM += 1;
+      }
+      state.zap.items = [...state.zap.items];
+    },
+    deleteReduxZap: (state, action) => {
+      const id = action.payload;
+      state.zap.items = state.zap.items.filter((item) => item.KOD !== id);
+    },
+    refreshReduxZap: (state, action) => {
+      const id = action.payload;
+      const dateZap = state.zap.items.find((item) => item.KOD === id);
+      if (dateZap) {
+        const date = new Date();
+        date.toISOString();
+        dateZap.DATUPDATE = date;
+      }
+      state.zap.items = [...state.zap.items];
+    },
+    showEditReduxZap: (state, action) => {
+      const { pKodZap, pZapText, pZav, pRozv,zapCina } = action.payload;
+      const editZap = state.zap.items.find((item) => item.KOD === pKodZap);
+      if (editZap) {
+        editZap.ZAPTEXT = pZapText;
+        editZap.ZAV = pZav;
+        editZap.ROZV = pRozv;
+        editZap.ZAPCINA=zapCina;
+      }
+      state.zap.items = [...state.zap.items];
+    },
+    showEditReduxZapText: (state, action) => {
+      const { pKodZap, pZapText} = action.payload;
+      const editZap = state.zap.items.find((item) => item.KOD === pKodZap);
+      if (editZap) {
+        editZap.ZAPTEXT = pZapText;
+      }
+      state.zap.items = [...state.zap.items];
+    },
+    showEditReduxZapCarCount: (state, action) => {
+      const { pKilAmZakr, pKodZap} = action.payload;
+      const editZap = state.zap.items.find((item) => item.KOD === pKodZap);
+      if (editZap) {
+        editZap.KILAMACT = editZap.KILAMACT - pKilAmZakr;
+      }
+      state.zap.items = [...state.zap.items];
+    },
+  },
+  extraReducers: {
+    [fetchTransportations.pending]: (state) => {
+      state.transportation.items = [];
+      state.transportation.status = "loading";
+    },
+    [fetchTransportations.fulfilled]: (state, action) => {
+      state.transportation.items = action.payload;
+      state.transportation.status = "loaded";
+    },
+    [fetchTransportations.rejected]: (state) => {
+      state.transportation.items = [];
+      state.transportation.status = "error";
+    },
+  },
+});
+export const {
+  addReduxZap,
+
+} = transportationSlice.actions;
+export const transportationReducer = transportationSlice.reducer;
