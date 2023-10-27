@@ -25,7 +25,9 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
     // const { data } = await axiosMain.get("https://api2.ict.lviv.ua//refresh", {
     //   withCredentials: true,
     // });
-    const { data } = await axios.get("/refresh");
+    const { data } = await axios.get("/refresh",{
+      withCredentials:true
+    });
     return data;
   } catch (error) {
     if (error.response.data.message === "Користувач не авторизований") {
