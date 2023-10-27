@@ -12,6 +12,7 @@ export const fetchAllZap = createAsyncThunk(
     }
   }
 );
+// ddsa
 export const fetchZap = createAsyncThunk(
   "cargos/fetchZap",
   async (KOD_OS) => {
