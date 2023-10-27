@@ -22,10 +22,10 @@ export const fetchRegister = createAsyncThunk(
 );
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
   try {
-    // const { data } = await axiosMain.get("https://api2.ict.lviv.ua/refresh", {
-    //   withCredentials: true,
-    // });
-    const { data } = await axios.get("/refresh");
+    const { data } = await axiosMain.get("https://api2.ict.lviv.ua//refresh", {
+      withCredentials: true,
+    });
+    // const { data } = await axios.get("/refresh");
     return data;
   } catch (error) {
     if (error.response.data.message === "Користувач не авторизований") {
