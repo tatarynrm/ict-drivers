@@ -22,7 +22,7 @@ export const fetchRegister = createAsyncThunk(
 );
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
   try {
-    const { data } = await axiosMain.get("http://api2.ict.lviv.ua/refresh", {
+    const { data } = await axiosMain.get("https://api2.ict.lviv.ua/refresh", {
       withCredentials: true,
     });
     // const { data } = await axiosMain.get("http://localhost:8801/refresh", {

@@ -1,11 +1,12 @@
 import axios from "axios";
 
 // export const API_URL = `http://localhost:8801`;
-export const API_URL = `http://api2.ict.lviv.ua`;
+export const API_URL = `https://api2.ict.lviv.ua`;
 
 const api = axios.create({
-  withCredentials: true,
   baseURL: API_URL,
+  withCredentials: true,
+
 });
 
 api.interceptors.request.use((config) => {
