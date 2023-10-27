@@ -6,7 +6,6 @@ export const API_URL = `https://api2.ict.lviv.ua`;
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-
 });
 
 api.interceptors.request.use((config) => {
