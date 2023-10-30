@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Spinner,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "../../utils/axios";
@@ -16,10 +17,11 @@ import { fetchTransportations } from "../../redux/slices/transportations";
 import TransportationItem from "../../components/transportation/TransportationItem";
 import { SearchIcon } from "@chakra-ui/icons";
 import toTimestamp, { toTimeStamp } from "../../helpers/date";
-
+// import waitLogo from '../../assets/animation/Download_spinner.svg'
 const Transportation = () => {
   const [lesson, setLesson] = useState(true);
   const [topButtonsFilter, setTopButtonsFilter] = useState(null);
+  // const [fetchedData,setFetchedData] = useState('')
   // const [inProgress,setInProgress] = useState(null)
   // const [inProblem,setInProblem] = useState(null)
   // const [inPay,setInPay] = useState(null)
@@ -46,11 +48,12 @@ const Transportation = () => {
   useEffect(() => {
     dispatch(fetchTransportations(userData?.user.KOD_UR));
   }, [userData]);
-  useEffect(() => {
-    setTimeout(() => {
-      setLesson(false);
-    }, 7000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLesson(false);
+  //   }, 7000);
+  // }, []);
+console.log(transportation);
   return (
     <Stack
       width={["100%", "100%", "90%", "90%"]}
@@ -61,7 +64,7 @@ const Transportation = () => {
     >
       <Box
         display={"flex"}
-        flexDirection={["column", "column", "row", "row"]}
+        flexDirection={["column", "column", "column", "row"]}
         justifyContent={[
           "space-between",
           "space-between",
@@ -70,7 +73,7 @@ const Transportation = () => {
         ]}
         width={"100%"}
       >
-        <Box width={["100%", "100%", "50%", "100%"]}>
+        <Box width={["100%", "100%", "100%", "100%"]}>
           <InputGroup>
             <InputLeftElement
               pointerEvents="none"
@@ -125,7 +128,7 @@ const Transportation = () => {
           </Button>
         </Box>
       </Box>
-      {lesson && (
+      {/* {lesson && (
         <Box>
           <Highlight
             query="курсор"
@@ -135,7 +138,8 @@ const Transportation = () => {
             інформацію.
           </Highlight>
         </Box>
-      )}
+      )} */}
+      {/* {transportation?.items && <Text color={"green.400"} fontWeight={"bold"}>К-сть перевезень у процесі: {transportation?.items.length}</Text> } */}
       <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, 1fr)">
         {transportation?.items ? (
           transportation?.items
@@ -166,16 +170,17 @@ const Transportation = () => {
               return <TransportationItem key={idx} item={item} />;
             })
         ) : (
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-            alignItems={"center"}
-            textAlign={"center"}
-            justifyContent={"center"}
-          />
+          // <Spinner
+          //   thickness="4px"
+          //   speed="0.65s"
+          //   emptyColor="gray.200"
+          //   color="blue.500"
+          //   size="xl"
+          //   alignItems={"center"}
+          //   textAlign={"center"}
+          //   justifyContent={"center"}
+          // />
+          'Download'
         )}
       </SimpleGrid>
     </Stack>

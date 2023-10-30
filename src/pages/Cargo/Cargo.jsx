@@ -13,27 +13,42 @@ const Cargo = () => {
   useEffect(() => {
     dispatch(fetchAllZap());
   }, []);
-  console.log(zap);
-  console.log(status);
+  console.log(zap.length);
   return (
-    <Stack
-      width={"90%"}
-      margin={"0 auto"}
-      marginTop={"20px"}
-      display={"flex"}
-      flexDirection={"column"}
-    >
-      <SimpleGrid
-        spacing={5}
-        templateColumns={[
-          "repeat(auto-fill, minmax(1fr))",
-          "repeat(auto-fill, minmax(500px,1fr))",
-          "repeat(auto-fill, minmax(500px,1fr))",
-          "repeat(auto-fill, minmax(500px,1fr))",
-        ]}
-      >
-        {status?.status !== "loaded" ? (
-          <>
+    <>
+      {zap.length <= 0 ? (
+        <Stack
+          display={"flex"}
+          width={"100%"}
+          height={"70vh"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Stack>
+      ) : (
+        <Stack
+          width={"90%"}
+          margin={"0 auto"}
+          marginTop={"20px"}
+          display={"flex"}
+          flexDirection={"column"}
+        >
+          <SimpleGrid
+            spacing={5}
+            templateColumns={[
+              "repeat(auto-fill, minmax(1fr))",
+              "repeat(auto-fill, minmax(500px,1fr))",
+              "repeat(auto-fill, minmax(500px,1fr))",
+              "repeat(auto-fill, minmax(500px,1fr))",
+            ]}
+          >
             {zap
               .filter((item) => item.DATUPDATE)
               .sort(
@@ -42,12 +57,10 @@ const Cargo = () => {
               .map((item, idx) => {
                 return <CargoItem key={idx} item={item} />;
               })}
-          </>
-        ) : (
-          <Spinner />
-        )}
-      </SimpleGrid>
-    </Stack>
+          </SimpleGrid>
+        </Stack>
+      )}
+    </>
   );
 };
 

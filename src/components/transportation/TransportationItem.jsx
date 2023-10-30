@@ -80,11 +80,11 @@ const TransportationItem = ({ item }) => {
             />
           </Tooltip>
         )}
-        <Box width={["100%"]} display={"flex"} gap={"30px"}>
+        <Box fontSize={["12px","16px","16px","16px"]} width={["100%"]} display={"flex"} gap={"30px"} justifyContent={["space-between","space-between","start","start"]}>
           <Text>Завантаження {moment(item.ZAVDAT).format("L")}</Text>
           <Text>Заявка № {item.NUM}</Text>
         </Box>
-        <Text>
+        <Text fontSize={["12px","14px","16px","16px"]}>
           {item.ZAVPUNKT} - {item.ROZVPUNKT}
         </Text>
       </Button>
