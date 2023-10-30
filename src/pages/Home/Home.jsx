@@ -12,6 +12,11 @@ import {
   Divider,
   AspectRatio,
   Box,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
 import axios from "../../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +37,7 @@ import {
 } from "recharts";
 import ThisYearChart from "../../components/charts/ThisYearChart";
 import LastYearChart from "../../components/charts/LastYearChart";
+import TwoYearsAgo from "../../components/charts/TwoYearsAgo";
 const Home = () => {
   const user = useSelector((state) => state.user.user.items[0]);
   const data = useSelector((state) => state.user.user.data);
@@ -57,151 +63,156 @@ const Home = () => {
     >
       <SimpleGrid
         spacing={100}
-        templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+        templateColumns="repeat(auto-fill, minmax(1fr, 1fr))"
       >
-        <Card textAlign={"center"} alignItems={"center"}>
+        <Card textAlign={"left"} alignItems={"center"}>
           <CardHeader>
-            <Heading size="md">Початок співпраці</Heading>
+            <Heading size="md">Інформація про нашу співпрацю</Heading>
           </CardHeader>
           <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+          <CardBody display={"flex"} flexDirection={"column"} flexWrap={"wrap"}>
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {moment(user?.DATZAV_FIRST).format("LL")}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button>Переглянути</Button>
-          </CardFooter>
-        </Card>
-        <Card textAlign={"center"} alignItems={"center"}>
-          <CardHeader>
-            <Heading size="md">Виконано перевезень за весь період</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+              <Heading as="h3" size="md">
+                Початок співпраці:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {moment(user?.DATZAV_FIRST).format("LL")}
+              </Text>
+            </Box>
+            <Divider />
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {user?.KP_ALL}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button>Переглянути</Button>
-          </CardFooter>
-        </Card>
-        <Card textAlign={"center"} alignItems={"center"}>
-          <CardHeader>
-            <Heading size="md">Виконано перевезень за минулий рік</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+              <Heading as="h3" size="md">
+                Виконано перевезень за весь період:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {user?.KP_ALL}
+              </Text>
+            </Box>
+            <Divider />
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {user?.KP_YEAR_PREV}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button>Переглянути</Button>
-          </CardFooter>
-        </Card>
-        <Card textAlign={"center"} alignItems={"center"}>
-          <CardHeader>
-            <Heading size="md">Виконано перевезень за поточний рік</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+              <Heading as="h3" size="md">
+                Виконано перевезень за минулий рік:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {user?.KP_YEAR_PREV}
+              </Text>
+            </Box>
+            <Divider />
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {user?.KP_YEAR_CURR}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button>Переглянути</Button>
-          </CardFooter>
-        </Card>
-        <Card textAlign={"center"} alignItems={"center"}>
-          <CardHeader>
-            <Heading size="md">Виконано перевезень за минулий місяць</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+              <Heading as="h3" size="md">
+                Виконано перевезень за поточний рік:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {user?.KP_YEAR_CURR}
+              </Text>
+            </Box>
+            <Divider />
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {user?.KP_MONTH_PREV}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button>Перейти доперевезень</Button>
-          </CardFooter>
-        </Card>
-        <Card textAlign={"center"} alignItems={"center"}>
-          <CardHeader>
-            <Heading size="md">Виконано перевезень за поточний місяць</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+              <Heading as="h3" size="md">
+                Виконано перевезень за минулий місяць:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {user?.KP_MONTH_PREV}
+              </Text>
+            </Box>
+            <Divider />
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {user?.KP_MONTH_CURR}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button>Перейти до перевезень</Button>
-          </CardFooter>
-        </Card>
-        <Card textAlign={"center"} alignItems={"center"}>
-          <CardHeader>
-            <Heading size="md">Останнє перевезення</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Text
-              fontWeight={"bold"}
-              fontSize={"20px"}
-              style={{ color: "green" }}
+              <Heading as="h3" size="md">
+                Виконано перевезень за поточний місяць:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {user?.KP_MONTH_CURR}
+              </Text>
+            </Box>
+            <Divider />
+            <Box
+              height={"auto"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={"20px"}
+              marginBottom={"10px"}
             >
-              {moment(user?.DATZAV_LAST).format("LL")}
-            </Text>
+              <Heading as="h3" size="md">
+                Останнє перевезення:
+              </Heading>
+              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                {moment(user?.DATZAV_LAST).format("LL")}
+              </Text>
+            </Box>
+            <Divider />
           </CardBody>
-          <CardFooter>
-            <Button>Перейти до перевезення</Button>
-          </CardFooter>
         </Card>
       </SimpleGrid>
+      {/* TABSSSSSSSSSSSSS */}
+      <Tabs>
+        <TabList>
+          <Tab>Графік перевезень за поточний рік</Tab>
+          <Tab>Графік перевезень за минулий рік</Tab>
+          <Tab>Два роки тому</Tab>
+        </TabList>
 
-
+        <TabPanels>
+          <TabPanel>
+            <Box>
+              <ThisYearChart item={data} />
+            </Box>
+          </TabPanel>
+          <TabPanel>
+            <Box>
+              <LastYearChart item={data} />
+            </Box>
+          </TabPanel>
+          <TabPanel>
+            <Box>
+              <TwoYearsAgo item={data} />
+            </Box>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+      {/* TABSSSSSSSSSSSSS */}
       <Stack
         display={"flex"}
         gap={"30px"}
         margin={"0 auto"}
         width={"100%"}
         height={"400px"}
-      >
-       <Box>
-       <ThisYearChart item={data} />
-       </Box>
-      <Box>
-      <LastYearChart item={data} />
-      </Box>
-      </Stack>
+      ></Stack>
     </Stack>
   );
 };
