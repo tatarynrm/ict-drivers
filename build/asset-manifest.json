@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.js": "/static/js/main.575049e3.js",
+    "main.js": "/static/js/main.5e721168.js",
     "static/media/logo_zakhid.svg": "/static/media/logo_zakhid.3ddbb2e0a33831469315c2da7e70c6f7.svg",
     "index.html": "/index.html",
-    "main.575049e3.js.map": "/static/js/main.575049e3.js.map"
+    "main.5e721168.js.map": "/static/js/main.5e721168.js.map"
   },
   "entrypoints": [
-    "static/js/main.575049e3.js"
+    "static/js/main.5e721168.js"
   ]
 }

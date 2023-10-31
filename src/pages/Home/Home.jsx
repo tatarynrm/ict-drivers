@@ -17,6 +17,11 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
 } from "@chakra-ui/react";
 import axios from "../../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,6 +58,16 @@ const Home = () => {
       dispatch(fetchTwoYearsData(userData?.user.KOD_UR));
     }
   }, [userData]);
+
+  const getPercentage = (startNumber, newNumber) => {
+    console.log(startNumber);
+    const difference = newNumber - startNumber;
+    const perecentage = (difference - startNumber) * 100;
+    console.log(`PERCENTAGE ${perecentage}`);
+    return perecentage;
+  };
+  getPercentage(20,20)
+  console.log(user?.KP_YEAR_PREV);
   return (
     <Stack
       width={["90%", "90%", "70%", "70%"]}
@@ -82,7 +97,9 @@ const Home = () => {
                 Початок співпраці:
               </Heading>
               <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
-                {moment(user?.DATZAV_FIRST).format("LL")}
+                {user?.DATZAV_FIRST
+                  ? moment(user?.DATZAV_FIRST).format("LL")
+                  : ""}
               </Text>
             </Box>
             <Divider />
@@ -129,6 +146,24 @@ const Home = () => {
               <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
                 {user?.KP_YEAR_CURR}
               </Text>
+              {/* {user?.KP_YEAR_CURR & user?.KP_YEAR_PREV &&
+              user?.KP_YEAR_CUR > user?.KP_YEAR_PREV ? (
+                <Stat>
+                  <StatHelpText>
+                    <StatArrow type="increase" />
+
+                  </StatHelpText>
+                </Stat>
+              ) : (
+                <Stat>
+       
+                  <StatHelpText>
+                    <StatArrow type="decrease" />
+
+             
+                  </StatHelpText>
+                </Stat>
+              )} */}
             </Box>
             <Divider />
             <Box
@@ -172,7 +207,9 @@ const Home = () => {
                 Останнє перевезення:
               </Heading>
               <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
-                {moment(user?.DATZAV_LAST).format("LL")}
+                {user?.DATZAV_LAST
+                  ? moment(user?.DATZAV_LAST).format("LL")
+                  : ""}
               </Text>
             </Box>
             <Divider />

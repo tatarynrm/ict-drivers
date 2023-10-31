@@ -9,6 +9,7 @@ import Home from "./pages/Home/Home";
 import Transportation from "./pages/Transportation/Transportation";
 import Cargo from "./pages/Cargo/Cargo";
 import { fetchUser } from "./redux/slices/user";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/transpotation" element={<Transportation />} />
           <Route exact path="/cargos" element={<Cargo />} />
+          <Route exact path="/settings" element={<Settings />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

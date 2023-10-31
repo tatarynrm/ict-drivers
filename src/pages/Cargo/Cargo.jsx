@@ -13,7 +13,7 @@ const Cargo = () => {
   useEffect(() => {
     dispatch(fetchAllZap());
   }, []);
-  console.log(zap.length);
+
   return (
     <>
       {zap.length <= 0 ? (

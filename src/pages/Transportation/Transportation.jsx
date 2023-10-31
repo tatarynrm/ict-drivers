@@ -53,7 +53,7 @@ const Transportation = () => {
   //     setLesson(false);
   //   }, 7000);
   // }, []);
-console.log(transportation);
+
   return (
     <Stack
       width={["100%", "100%", "90%", "90%"]}

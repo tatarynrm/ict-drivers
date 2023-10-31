@@ -6,7 +6,6 @@ const HeaderNav = () => {
   const [active, setActive] = useState("Головна");
   const location = useLocation();
   useEffect(() => {}, [location]);
-  console.log(location);
   return (
     <Box
       display={["none", "none", "flex", "flex"]}

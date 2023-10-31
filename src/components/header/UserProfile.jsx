@@ -1,9 +1,24 @@
-import { Avatar, Button, Center, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Avatar,
+  Button,
+  Center,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
 import { useSelector } from "react-redux";
+import { SiTelegram } from "react-icons/si";
+import { MdOutlineMail } from "react-icons/md";
+import { ImExit } from "react-icons/im";
+import { FiSettings } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
-const UserProfile = ({handleLogout}) => {
-    const userData = useSelector((state) => state.auth.data);
+const UserProfile = ({ handleLogout }) => {
+  const userData = useSelector((state) => state.auth.data);
   return (
     <Menu>
       <MenuButton
@@ -34,19 +49,42 @@ const UserProfile = ({handleLogout}) => {
         </Center>
         <br />
         <MenuDivider />
-        {/* <MenuItem>Your Servers</MenuItem> */}
-        <MenuItem>
-          <a href="https://t.me/I_Dont_Have_A_Phone_Number" target="__blank">
-            Технічна підтримка Telegram
-          </a>
-        </MenuItem>
-        <MenuItem>
-          <a href="mailto:support@ict.lviv.ua">
-            Технічна підтримка E-mail
-          </a>
+
+        <MenuItem isDisabled cursor={"pointer"}>
+          Технічна підтримка
         </MenuItem>
 
-        <MenuItem onClick={handleLogout}>Вийти</MenuItem>
+        <a href="https://t.me/I_Dont_Have_A_Phone_Number" target="__blank">
+          <MenuItem display={"flex"} gap={3}>
+            <SiTelegram />
+            <Text>Telegram</Text>
+          </MenuItem>
+        </a>
+
+        <a href="mailto:support@ict.lviv.ua">
+          <MenuItem display={"flex"} gap={3}>
+            <MdOutlineMail />
+            <Text>E-mail</Text>
+          </MenuItem>
+        </a>
+        <MenuDivider />
+        <Link to={"/settings"}>
+          <MenuItem display={"flex"} gap={3}>
+            <FiSettings />
+            <Text>Налаштування</Text>
+          </MenuItem>
+        </Link>
+
+        <Button
+          marginTop={20}
+          marginLeft={10}
+          onClick={handleLogout}
+          rightIcon={<ImExit />}
+          colorScheme="red"
+          variant="outline"
+        >
+          Вийти
+        </Button>
       </MenuList>
     </Menu>
   );

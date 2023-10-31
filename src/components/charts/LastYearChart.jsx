@@ -40,11 +40,9 @@ const options = {
     },
   },
 };
-//   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
 
 const LastYearChart = ({ item }) => {
-  console.log(item.lastYear);
-  console.log(item.thisYear);
   const labels = item?.lastYear?.map(
     (item) =>
       moment(item.MIS).format("MMMM").charAt(0).toUpperCase() +
