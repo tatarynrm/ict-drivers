@@ -58,18 +58,20 @@ const TransportationItem = ({ item }) => {
         onClick={onToggle}
         margin={["0 auto"]}
       >
-        {item.PERNEKOMPLEKT !== null & item.DATPNPREESTR ? null : item.DATPNPREESTR && (
-          <CheckCircleIcon
-            style={{
-              position: "absolute",
-              top: "-5px",
-              left: "0",
-              color: "green",
-            }}
-          />
-        )}
+        {(item.PERNEKOMPLEKT !== null) & item.DATPNPREESTR
+          ? null
+          : item.DATPNPREESTR && (
+              <CheckCircleIcon
+                style={{
+                  position: "absolute",
+                  top: "-5px",
+                  left: "0",
+                  color: "green",
+                }}
+              />
+            )}
 
-        {item?.DATPNPREESTR === null 
+        {item?.DATPNPREESTR === null
           ? null
           : item.PERNEKOMPLEKT && (
               <Tooltip hasArrow label={item.PERNEKOMPLEKT} placement="top">
@@ -84,7 +86,7 @@ const TransportationItem = ({ item }) => {
               </Tooltip>
             )}
 
-        {item?.DATPNPREESTR !== null 
+        {item?.DATPNPREESTR !== null
           ? null
           : item.PERNEKOMPLEKT && (
               <Tooltip hasArrow label={item.PERNEKOMPLEKT} placement="top">
@@ -253,7 +255,20 @@ const TransportationItem = ({ item }) => {
                   <Text style={{ color: "red" }}>{item.PERNEKOMPLEKT}</Text>
                 </Box>
               )}
-
+          {item?.DATPNPREESTR !== null
+            ? null
+            : item.PERNEKOMPLEKT && (
+                <Box style={{ wordWrap: "break-word" }} height={"100%"}>
+                  <Tooltip
+                    hasArrow
+                    label="Некомплект документів"
+                    placement="top"
+                  >
+                    <InfoIcon cursor={"pointer"} />
+                  </Tooltip>
+                  <Text style={{ color: "red" }}>{item.PERNEKOMPLEKT}</Text>
+                </Box>
+              )}
           {/* {item.PERNEKOMPLEKT && (
             <Box height={"100%"}>
               <Tooltip hasArrow label="Податкова накладна" placement="top">
@@ -342,7 +357,7 @@ const TransportationItem = ({ item }) => {
             </Text>
           </Box>
         </Stack>
-        {item.DATPNPREESTR  && (
+        {item.DATPNPREESTR && (
           <Text padding={"0.3rem"} backgroundColor={"green"}>
             Рахунок № {item.NUMRAHP} оплачено{" "}
             {moment(item.DATPNPREESTR).format("ll")}

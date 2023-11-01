@@ -13,10 +13,15 @@ import {
 import { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNotEnoughDocs, fetchPayFullTransportations, fetchTransportations } from "../../redux/slices/transportations";
+import {
+  fetchNotEnoughDocs,
+  fetchPayFullTransportations,
+  fetchTransportations,
+} from "../../redux/slices/transportations";
 import TransportationItem from "../../components/transportation/TransportationItem";
 import { SearchIcon } from "@chakra-ui/icons";
 import toTimestamp, { toTimeStamp } from "../../helpers/date";
+import { getBrowserType } from "../../helpers/checkBrowser";
 // import waitLogo from '../../assets/animation/Download_spinner.svg'
 const Transportation = () => {
   const [lesson, setLesson] = useState(true);
@@ -63,6 +68,12 @@ const Transportation = () => {
       display={"flex"}
       flexDirection={"column"}
     >
+      {getBrowserType() == "Apple Safari" && (
+        <Text>
+          Ви використовуєте браузер Safari.Для коректного відображення усіх
+          функцій перейдіть на Google Chrome / Mozzila Firefox
+        </Text>
+      )}
       <Box
         display={"flex"}
         flexDirection={["column", "column", "column", "row"]}
@@ -97,20 +108,30 @@ const Transportation = () => {
         >
           <Button
             fontSize={"12px"}
-            onClick={() => dispatch(fetchTransportations(userData?.user?.KOD_UR))}
+            onClick={() =>
+              dispatch(fetchTransportations(userData?.user?.KOD_UR))
+            }
             colorScheme="teal"
             variant="outline"
           >
             Перевезення в процесі
           </Button>
           <Button
-                onClick={() => dispatch(fetchPayFullTransportations(userData?.user?.KOD_UR))}
-          fontSize={"12px"} colorScheme="teal" variant="outline">
+            onClick={() =>
+              dispatch(fetchPayFullTransportations(userData?.user?.KOD_UR))
+            }
+            fontSize={"12px"}
+            colorScheme="teal"
+            variant="outline"
+          >
             Оплачені перевезення
           </Button>
           <Button
             onClick={() => dispatch(fetchNotEnoughDocs(userData?.user?.KOD_UR))}
-          fontSize={"12px"} colorScheme="teal" variant="outline">
+            fontSize={"12px"}
+            colorScheme="teal"
+            variant="outline"
+          >
             Некомплект документів
           </Button>
           <Button

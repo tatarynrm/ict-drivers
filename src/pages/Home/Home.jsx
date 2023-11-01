@@ -43,6 +43,7 @@ import {
 import ThisYearChart from "../../components/charts/ThisYearChart";
 import LastYearChart from "../../components/charts/LastYearChart";
 import TwoYearsAgo from "../../components/charts/TwoYearsAgo";
+import { getBrowserType } from "../../helpers/checkBrowser";
 const Home = () => {
   const user = useSelector((state) => state.user.user.items[0]);
   const data = useSelector((state) => state.user.user.data);
@@ -87,6 +88,7 @@ const Home = () => {
       display={"flex"}
       flexDirection={"column"}
     >
+
       <SimpleGrid
         spacing={100}
         templateColumns="repeat(auto-fill, minmax(1fr, 1fr))"
