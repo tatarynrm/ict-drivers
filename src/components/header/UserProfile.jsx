@@ -16,6 +16,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { ImExit } from "react-icons/im";
 import { FiSettings } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import config from "../../config";
 
 const UserProfile = ({ handleLogout }) => {
   const userData = useSelector((state) => state.auth.data);
@@ -54,14 +55,14 @@ const UserProfile = ({ handleLogout }) => {
           Технічна підтримка
         </MenuItem>
 
-        <a href="https://t.me/I_Dont_Have_A_Phone_Number" target="__blank">
+        <a href={config.SUPPORT_TELEGRAM_LINK} target="__blank">
           <MenuItem display={"flex"} gap={3}>
             <SiTelegram />
             <Text>Telegram</Text>
           </MenuItem>
         </a>
 
-        <a href="mailto:support@ict.lviv.ua">
+        <a href={config.SUPPORT_EMAIL_LINK}>
           <MenuItem display={"flex"} gap={3}>
             <MdOutlineMail />
             <Text>E-mail</Text>

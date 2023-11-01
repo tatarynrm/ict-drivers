@@ -17,6 +17,7 @@
     "apexcharts": "^3.44.0",
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
+    "dotenv": "^16.3.1",
     "faker": "^6.6.6",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.4",

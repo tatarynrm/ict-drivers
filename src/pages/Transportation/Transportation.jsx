@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTransportations } from "../../redux/slices/transportations";
+import { fetchNotEnoughDocs, fetchPayFullTransportations, fetchTransportations } from "../../redux/slices/transportations";
 import TransportationItem from "../../components/transportation/TransportationItem";
 import { SearchIcon } from "@chakra-ui/icons";
 import toTimestamp, { toTimeStamp } from "../../helpers/date";
@@ -28,25 +28,26 @@ const Transportation = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const { transportation } = useSelector((state) => state.transportation);
   const userData = useSelector((state) => state.auth.data);
-  const setProgress = (option) => {
-    switch (option) {
-      case 1:
-        setTopButtonsFilter(1);
-        break;
-      case 2:
-        setTopButtonsFilter(2);
-        break;
-      case 3:
-        setTopButtonsFilter(3);
-        break;
+  // const setProgress = (option) => {
+  //   switch (option) {
+  //     case 1:
+  //       setTopButtonsFilter(1);
+  //       break;
+  //     case 2:
+  //       setTopButtonsFilter(2);
+  //       break;
+  //     case 3:
+  //       setTopButtonsFilter(3);
+  //       break;
 
-      default:
-        break;
-    }
-  };
+  //     default:
+  //       break;
+  //   }
+  // };
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchTransportations(userData?.user.KOD_UR));
+    userData?.user?.KOD_UR &&
+      dispatch(fetchTransportations(userData?.user?.KOD_UR));
   }, [userData]);
   // useEffect(() => {
   //   setTimeout(() => {
@@ -96,26 +97,20 @@ const Transportation = () => {
         >
           <Button
             fontSize={"12px"}
-            onClick={() => setProgress(1)}
+            onClick={() => dispatch(fetchTransportations(userData?.user?.KOD_UR))}
             colorScheme="teal"
             variant="outline"
           >
             Перевезення в процесі
           </Button>
           <Button
-            fontSize={"12px"}
-            onClick={() => setProgress(2)}
-            colorScheme="teal"
-            variant="outline"
-          >
+                onClick={() => dispatch(fetchPayFullTransportations(userData?.user?.KOD_UR))}
+          fontSize={"12px"} colorScheme="teal" variant="outline">
             Оплачені перевезення
           </Button>
           <Button
-            fontSize={"12px"}
-            onClick={() => setProgress(3)}
-            colorScheme="teal"
-            variant="outline"
-          >
+            onClick={() => dispatch(fetchNotEnoughDocs(userData?.user?.KOD_UR))}
+          fontSize={"12px"} colorScheme="teal" variant="outline">
             Некомплект документів
           </Button>
           <Button
@@ -141,47 +136,45 @@ const Transportation = () => {
       )} */}
       {/* {transportation?.items && <Text color={"green.400"} fontWeight={"bold"}>К-сть перевезень у процесі: {transportation?.items.length}</Text> } */}
       <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, 1fr)">
-        {transportation?.items ? (
-          transportation?.items
-            .filter((item) => {
-              return searchFilter.toLowerCase() === ""
-                ? item
-                : item.ZAVPUNKT.toLowerCase().includes(searchFilter) ||
-                    item.ROZVPUNKT?.toLowerCase().includes(searchFilter) ||
-                    item.ZAVPUNKT?.toUpperCase().includes(searchFilter) ||
-                    item.ROZVPUNKT?.toUpperCase().includes(searchFilter) ||
-                    item.ZAVPUNKT?.includes(searchFilter) ||
-                    item.ROZVPUNKT?.includes(searchFilter) ||
-                    item.VOD?.toLowerCase().includes(searchFilter) ||
-                    item.VOD?.toUpperCase().includes(searchFilter) ||
-                    item.NUM?.toString().includes(searchFilter);
-            })
-            .sort((a, b) => toTimestamp(b.DAT) - toTimestamp(a.DAT))
-            .filter((item) =>
-              topButtonsFilter === 1 ? item.DATDOCP === null : item
-            )
-            .filter((item) =>
-              topButtonsFilter === 2 ? item.DATPNPREESTR !== null : item
-            )
-            .filter((item) =>
-              topButtonsFilter === 3 ? item.PERNEKOMPLEKT !== null : item
-            )
-            .map((item, idx) => {
-              return <TransportationItem key={idx} item={item} />;
-            })
-        ) : (
-          // <Spinner
-          //   thickness="4px"
-          //   speed="0.65s"
-          //   emptyColor="gray.200"
-          //   color="blue.500"
-          //   size="xl"
-          //   alignItems={"center"}
-          //   textAlign={"center"}
-          //   justifyContent={"center"}
-          // />
-          'Download'
-        )}
+        {transportation?.items
+          ? transportation?.items
+              .filter((item) => {
+                return searchFilter.toLowerCase() === ""
+                  ? item
+                  : item.ZAVPUNKT.toLowerCase().includes(searchFilter) ||
+                      item.ROZVPUNKT?.toLowerCase().includes(searchFilter) ||
+                      item.ZAVPUNKT?.toUpperCase().includes(searchFilter) ||
+                      item.ROZVPUNKT?.toUpperCase().includes(searchFilter) ||
+                      item.ZAVPUNKT?.includes(searchFilter) ||
+                      item.ROZVPUNKT?.includes(searchFilter) ||
+                      item.VOD?.toLowerCase().includes(searchFilter) ||
+                      item.VOD?.toUpperCase().includes(searchFilter) ||
+                      item.NUM?.toString().includes(searchFilter);
+              })
+              .sort((a, b) => toTimestamp(b.DAT) - toTimestamp(a.DAT))
+              .filter((item) =>
+                topButtonsFilter === 1 ? item.DATDOCP === null : item
+              )
+              .filter((item) =>
+                topButtonsFilter === 2 ? item.DATPNPREESTR !== null : item
+              )
+              .filter((item) =>
+                topButtonsFilter === 3 ? item.PERNEKOMPLEKT !== null : item
+              )
+              .map((item, idx) => {
+                return <TransportationItem key={idx} item={item} />;
+              })
+          : // <Spinner
+            //   thickness="4px"
+            //   speed="0.65s"
+            //   emptyColor="gray.200"
+            //   color="blue.500"
+            //   size="xl"
+            //   alignItems={"center"}
+            //   textAlign={"center"}
+            //   justifyContent={"center"}
+            // />
+            "Download"}
       </SimpleGrid>
     </Stack>
   );

@@ -58,7 +58,7 @@ const TransportationItem = ({ item }) => {
         onClick={onToggle}
         margin={["0 auto"]}
       >
-        {item.DATPNPREESTR && (
+        {item.PERNEKOMPLEKT !== null & item.DATPNPREESTR ? null : item.DATPNPREESTR && (
           <CheckCircleIcon
             style={{
               position: "absolute",
@@ -68,23 +68,47 @@ const TransportationItem = ({ item }) => {
             }}
           />
         )}
-        {item.PERNEKOMPLEKT && (
-          <Tooltip hasArrow label={item.PERNEKOMPLEKT} placement="top">
-            <WarningTwoIcon
-              style={{
-                position: "absolute",
-                bottom: "5px",
-                left: "0px",
-                color: "red",
-              }}
-            />
-          </Tooltip>
-        )}
-        <Box fontSize={["12px","16px","16px","16px"]} width={["100%"]} display={"flex"} gap={"30px"} justifyContent={["space-between","space-between","start","start"]}>
+
+        {item?.DATPNPREESTR === null 
+          ? null
+          : item.PERNEKOMPLEKT && (
+              <Tooltip hasArrow label={item.PERNEKOMPLEKT} placement="top">
+                <WarningTwoIcon
+                  style={{
+                    position: "absolute",
+                    bottom: "5px",
+                    left: "0px",
+                    color: "red",
+                  }}
+                />
+              </Tooltip>
+            )}
+
+        {item?.DATPNPREESTR !== null 
+          ? null
+          : item.PERNEKOMPLEKT && (
+              <Tooltip hasArrow label={item.PERNEKOMPLEKT} placement="top">
+                <WarningTwoIcon
+                  style={{
+                    position: "absolute",
+                    bottom: "5px",
+                    left: "0px",
+                    color: "red",
+                  }}
+                />
+              </Tooltip>
+            )}
+        <Box
+          fontSize={["12px", "16px", "16px", "16px"]}
+          width={["100%"]}
+          display={"flex"}
+          gap={"30px"}
+          justifyContent={["space-between", "space-between", "start", "start"]}
+        >
           <Text>Завантаження {moment(item.ZAVDAT).format("L")}</Text>
           <Text>Заявка № {item.NUM}</Text>
         </Box>
-        <Text fontSize={["12px","14px","16px","16px"]}>
+        <Text fontSize={["12px", "14px", "16px", "16px"]}>
           {item.ZAVPUNKT} - {item.ROZVPUNKT}
         </Text>
       </Button>
@@ -215,14 +239,21 @@ const TransportationItem = ({ item }) => {
             </Tooltip>
             <Text>{item.VOD}</Text>
           </Box>
-          {item.PERNEKOMPLEKT && (
-            <Box style={{ wordWrap: "break-word" }} height={"100%"}>
-              <Tooltip hasArrow label="Некомплект документів" placement="top">
-                <InfoIcon cursor={"pointer"} />
-              </Tooltip>
-              <Text style={{ color: "red" }}>{item.PERNEKOMPLEKT}</Text>
-            </Box>
-          )}
+          {item.DATPNPREESTR === null
+            ? null
+            : item.PERNEKOMPLEKT && (
+                <Box style={{ wordWrap: "break-word" }} height={"100%"}>
+                  <Tooltip
+                    hasArrow
+                    label="Некомплект документів"
+                    placement="top"
+                  >
+                    <InfoIcon cursor={"pointer"} />
+                  </Tooltip>
+                  <Text style={{ color: "red" }}>{item.PERNEKOMPLEKT}</Text>
+                </Box>
+              )}
+
           {/* {item.PERNEKOMPLEKT && (
             <Box height={"100%"}>
               <Tooltip hasArrow label="Податкова накладна" placement="top">
@@ -311,7 +342,7 @@ const TransportationItem = ({ item }) => {
             </Text>
           </Box>
         </Stack>
-        {item.DATPNPREESTR && (
+        {item.DATPNPREESTR  && (
           <Text padding={"0.3rem"} backgroundColor={"green"}>
             Рахунок № {item.NUMRAHP} оплачено{" "}
             {moment(item.DATPNPREESTR).format("ll")}

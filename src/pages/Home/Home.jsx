@@ -48,6 +48,22 @@ const Home = () => {
   const data = useSelector((state) => state.user.user.data);
   const userData = useSelector((state) => state.auth.data);
   const dispatch = useDispatch();
+  const [userLocation, setUserLocation] = useState([]);
+  const sucessfulLookup = async (position) => {
+    const { latitude, longitude } = position.coords;
+    const data = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?${latitude}&${longitude}&localityLanguage=uk`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const values = {
+          country: data.countryName,
+          city: data.city,
+          counter: 1,
+        };
+        setUserLocation(data);
+      });
+  };
   useEffect(() => {
     if (userData) {
       dispatch(fetchUser(userData?.user.KOD_UR));
@@ -59,15 +75,10 @@ const Home = () => {
     }
   }, [userData]);
 
-  const getPercentage = (startNumber, newNumber) => {
-    console.log(startNumber);
-    const difference = newNumber - startNumber;
-    const perecentage = (difference - startNumber) * 100;
-    console.log(`PERCENTAGE ${perecentage}`);
-    return perecentage;
-  };
-  getPercentage(20,20)
-  console.log(user?.KP_YEAR_PREV);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(sucessfulLookup);
+  }, []);
+
   return (
     <Stack
       width={["90%", "90%", "70%", "70%"]}
@@ -217,39 +228,40 @@ const Home = () => {
         </Card>
       </SimpleGrid>
       {/* TABSSSSSSSSSSSSS */}
-      <Tabs>
-        <TabList>
-          <Tab>Графік перевезень за поточний рік</Tab>
-          <Tab>Графік перевезень за минулий рік</Tab>
-          <Tab>Два роки тому</Tab>
-        </TabList>
-
-        <TabPanels>
-          <TabPanel>
-            <Box>
-              <ThisYearChart item={data} />
-            </Box>
-          </TabPanel>
-          <TabPanel>
-            <Box>
-              <LastYearChart item={data} />
-            </Box>
-          </TabPanel>
-          <TabPanel>
-            <Box>
-              <TwoYearsAgo item={data} />
-            </Box>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      {/* TABSSSSSSSSSSSSS */}
       <Stack
         display={"flex"}
         gap={"30px"}
         margin={"0 auto"}
         width={"100%"}
         height={"400px"}
-      ></Stack>
+      >
+        <Tabs>
+          <TabList>
+            <Tab>Графік перевезень за поточний рік</Tab>
+            <Tab>Графік перевезень за минулий рік</Tab>
+            <Tab>Два роки тому</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel height={"300px"}>
+              <Box>
+                <ThisYearChart item={data} />
+              </Box>
+            </TabPanel>
+            <TabPanel>
+              <Box>
+                <LastYearChart item={data} />
+              </Box>
+            </TabPanel>
+            <TabPanel>
+              <Box>
+                <TwoYearsAgo item={data} />
+              </Box>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Stack>
+      {/* TABSSSSSSSSSSSSS */}
     </Stack>
   );
 };

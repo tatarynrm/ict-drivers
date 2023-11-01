@@ -23,6 +23,7 @@ import { SiTelegram, SiTga } from "react-icons/si";
 import { MdOutlineMail } from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import config from "../../config";
 const BurgerMenu = ({ handleLogout }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement, setPlacement] = useState("left");
@@ -82,7 +83,7 @@ const BurgerMenu = ({ handleLogout }) => {
             flexDirection={"column"}
             gap={10}
           >
-            <a href="https://t.me/I_Dont_Have_A_Phone_Number" target="__blank">
+            <a href={config.SUPPORT_TELEGRAM_LINK} target="__blank">
               <Button
                 display={"flex"}
                 gap={5}
@@ -93,7 +94,7 @@ const BurgerMenu = ({ handleLogout }) => {
                 <SiTelegram />
               </Button>
             </a>
-            <a width={"100%"} href="mailto:support@ict.lviv.ua">
+            <a width={"100%"} href={config.SUPPORT_EMAIL_LINK}>
               <Button display={"flex"} gap={5} colorScheme="teal">
                 <Text> Підтримка</Text>
                 <MdOutlineMail />

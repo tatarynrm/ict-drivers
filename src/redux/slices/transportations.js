@@ -12,6 +12,28 @@ export const fetchTransportations = createAsyncThunk(
     }
   }
 );
+export const fetchPayFullTransportations = createAsyncThunk(
+  "cargos/fetchPayFullTransportations",
+  async (KOD) => {
+    try {
+      const { data } = await axios.post("/transportation-payfull",{KOD});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const fetchNotEnoughDocs = createAsyncThunk(
+  "cargos/fetchNotEnoughDocs",
+  async (KOD) => {
+    try {
+      const { data } = await axios.post("/transportation-no-docs",{KOD});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 export const fetchZap = createAsyncThunk(
   "cargos/fetchZap",
   async (KOD_OS) => {
@@ -131,6 +153,30 @@ const transportationSlice = createSlice({
       state.transportation.status = "loaded";
     },
     [fetchTransportations.rejected]: (state) => {
+      state.transportation.items = [];
+      state.transportation.status = "error";
+    },
+    [fetchPayFullTransportations.pending]: (state) => {
+      state.transportation.items = [];
+      state.transportation.status = "loading";
+    },
+    [fetchPayFullTransportations.fulfilled]: (state, action) => {
+      state.transportation.items = action.payload;
+      state.transportation.status = "loaded";
+    },
+    [fetchPayFullTransportations.rejected]: (state) => {
+      state.transportation.items = [];
+      state.transportation.status = "error";
+    },
+    [fetchNotEnoughDocs.pending]: (state) => {
+      state.transportation.items = [];
+      state.transportation.status = "loading";
+    },
+    [fetchNotEnoughDocs.fulfilled]: (state, action) => {
+      state.transportation.items = action.payload;
+      state.transportation.status = "loaded";
+    },
+    [fetchNotEnoughDocs.rejected]: (state) => {
       state.transportation.items = [];
       state.transportation.status = "error";
     },
