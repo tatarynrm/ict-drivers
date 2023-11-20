@@ -26,40 +26,17 @@ import { getBrowserType } from "../../helpers/checkBrowser";
 const Transportation = () => {
   const [lesson, setLesson] = useState(true);
   const [topButtonsFilter, setTopButtonsFilter] = useState(null);
-  // const [fetchedData,setFetchedData] = useState('')
-  // const [inProgress,setInProgress] = useState(null)
-  // const [inProblem,setInProblem] = useState(null)
-  // const [inPay,setInPay] = useState(null)
   const [searchFilter, setSearchFilter] = useState("");
   const { transportation } = useSelector((state) => state.transportation);
   const userData = useSelector((state) => state.auth.data);
-  // const setProgress = (option) => {
-  //   switch (option) {
-  //     case 1:
-  //       setTopButtonsFilter(1);
-  //       break;
-  //     case 2:
-  //       setTopButtonsFilter(2);
-  //       break;
-  //     case 3:
-  //       setTopButtonsFilter(3);
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  // };
   const dispatch = useDispatch();
+  const [activeTransportation, setActiveTransportation] = useState(
+    "Перевезення в процесі"
+  );
   useEffect(() => {
     userData?.user?.KOD_UR &&
       dispatch(fetchTransportations(userData?.user?.KOD_UR));
   }, [userData]);
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLesson(false);
-  //   }, 7000);
-  // }, []);
-
   return (
     <Stack
       width={["100%", "100%", "90%", "90%"]}
@@ -69,7 +46,7 @@ const Transportation = () => {
       flexDirection={"column"}
     >
       {getBrowserType() == "Apple Safari" && (
-        <Text>
+        <Text color={"red"} fontSize={"30px"}>
           Ви використовуєте браузер Safari.Для коректного відображення усіх
           функцій перейдіть на Google Chrome / Mozzila Firefox
         </Text>
@@ -108,35 +85,53 @@ const Transportation = () => {
         >
           <Button
             fontSize={"12px"}
-            onClick={() =>
-              dispatch(fetchTransportations(userData?.user?.KOD_UR))
+            onClick={() => {
+              setActiveTransportation("Перевезення в процесі");
+              dispatch(fetchTransportations(userData?.user?.KOD_UR));
+            }}
+            colorScheme={
+              activeTransportation === "Перевезення в процесі"
+                ? "green"
+                : "teal"
             }
-            colorScheme="teal"
             variant="outline"
           >
             Перевезення в процесі
           </Button>
           <Button
-            onClick={() =>
-              dispatch(fetchPayFullTransportations(userData?.user?.KOD_UR))
-            }
+            onClick={() => {
+              setActiveTransportation("Оплачені перевезення");
+              dispatch(fetchPayFullTransportations(userData?.user?.KOD_UR));
+            }}
             fontSize={"12px"}
-            colorScheme="teal"
+            colorScheme={
+              activeTransportation === "Оплачені перевезення" ? "green" : "teal"
+            }
             variant="outline"
           >
             Оплачені перевезення
           </Button>
           <Button
-            onClick={() => dispatch(fetchNotEnoughDocs(userData?.user?.KOD_UR))}
+            onClick={() => {
+              setActiveTransportation("Некомплект документів");
+              dispatch(fetchNotEnoughDocs(userData?.user?.KOD_UR));
+            }}
             fontSize={"12px"}
-            colorScheme="teal"
+            colorScheme={
+              activeTransportation === "Некомплект документів"
+                ? "green"
+                : "teal"
+            }
             variant="outline"
           >
             Некомплект документів
           </Button>
           <Button
             fontSize={"12px"}
-            onClick={() => setTopButtonsFilter(null)}
+            onClick={() => {
+              setActiveTransportation("Перевезення в процесі");
+              dispatch(fetchTransportations(userData?.user?.KOD_UR));
+            }}
             colorScheme="red"
             variant="outline"
           >
@@ -144,58 +139,54 @@ const Transportation = () => {
           </Button>
         </Box>
       </Box>
-      {/* {lesson && (
-        <Box>
-          <Highlight
-            query="курсор"
-            styles={{ px: "1", py: "1", bg: "orange.100", borderRadius: "4px" }}
-          >
-            Наведіть курсор на будь-яку іконку, та отримайте додаткову
-            інформацію.
-          </Highlight>
-        </Box>
-      )} */}
-      {/* {transportation?.items && <Text color={"green.400"} fontWeight={"bold"}>К-сть перевезень у процесі: {transportation?.items.length}</Text> } */}
       <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, 1fr)">
-        {transportation?.items
-          ? transportation?.items
-              .filter((item) => {
-                return searchFilter.toLowerCase() === ""
-                  ? item
-                  : item.ZAVPUNKT.toLowerCase().includes(searchFilter) ||
-                      item.ROZVPUNKT?.toLowerCase().includes(searchFilter) ||
-                      item.ZAVPUNKT?.toUpperCase().includes(searchFilter) ||
-                      item.ROZVPUNKT?.toUpperCase().includes(searchFilter) ||
-                      item.ZAVPUNKT?.includes(searchFilter) ||
-                      item.ROZVPUNKT?.includes(searchFilter) ||
-                      item.VOD?.toLowerCase().includes(searchFilter) ||
-                      item.VOD?.toUpperCase().includes(searchFilter) ||
-                      item.NUM?.toString().includes(searchFilter);
-              })
-              .sort((a, b) => toTimestamp(b.DAT) - toTimestamp(a.DAT))
-              .filter((item) =>
-                topButtonsFilter === 1 ? item.DATDOCP === null : item
-              )
-              .filter((item) =>
-                topButtonsFilter === 2 ? item.DATPNPREESTR !== null : item
-              )
-              .filter((item) =>
-                topButtonsFilter === 3 ? item.PERNEKOMPLEKT !== null : item
-              )
-              .map((item, idx) => {
-                return <TransportationItem key={idx} item={item} />;
-              })
-          : // <Spinner
-            //   thickness="4px"
-            //   speed="0.65s"
-            //   emptyColor="gray.200"
-            //   color="blue.500"
-            //   size="xl"
-            //   alignItems={"center"}
-            //   textAlign={"center"}
-            //   justifyContent={"center"}
-            // />
-            "Download"}
+        {transportation.status === "loaded" ? (
+          transportation?.items
+            .filter((item) => {
+              return searchFilter.toLowerCase() === ""
+                ? item
+                : item.ZAVPUNKT.toLowerCase().includes(searchFilter) ||
+                    item.ROZVPUNKT?.toLowerCase().includes(searchFilter) ||
+                    item.ZAVPUNKT?.toUpperCase().includes(searchFilter) ||
+                    item.ROZVPUNKT?.toUpperCase().includes(searchFilter) ||
+                    item.ZAVPUNKT?.includes(searchFilter) ||
+                    item.ROZVPUNKT?.includes(searchFilter) ||
+                    item.VOD?.toLowerCase().includes(searchFilter) ||
+                    item.VOD?.toUpperCase().includes(searchFilter) ||
+                    item.NUM?.toString().includes(searchFilter);
+            })
+            .sort((a, b) => toTimestamp(b.DAT) - toTimestamp(a.DAT))
+            .filter((item) =>
+              topButtonsFilter === 1 ? item.DATDOCP === null : item
+            )
+            .filter((item) =>
+              topButtonsFilter === 2 ? item.DATPNPREESTR !== null : item
+            )
+            .filter((item) =>
+              topButtonsFilter === 3 ? item.PERNEKOMPLEKT !== null : item
+            )
+            .map((item, idx) => {
+              return <TransportationItem key={idx} item={item} />;
+            })
+        ) : (
+          <Stack
+            display={"flex"}
+            height={"80vh"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+              alignItems={"center"}
+              textAlign={"center"}
+              justifyContent={"center"}
+            />
+          </Stack>
+        )}
       </SimpleGrid>
     </Stack>
   );

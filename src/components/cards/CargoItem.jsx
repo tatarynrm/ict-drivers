@@ -55,7 +55,7 @@ const CargoItem = ({item}) => {
                         navigator.clipboard.writeText(item.PERMENTEL);
                         toast({
                           title: "Ви скопіювали номер телефону.",
-                          description: `${item.PERMENPIPFULL} ${item.PERMENTEL}`,
+                          description: `${item.PIPFULL} ${item.PERMENTEL}`,
                           status: "success",
                           duration: 4000,
                           isClosable: true,
@@ -70,7 +70,7 @@ const CargoItem = ({item}) => {
                         navigator.clipboard.writeText(item.PERMENEMAIL);
                         toast({
                           title: "Ви скопіювали e-mail.",
-                          description: `${item.PERMENPIPFULL} ${item.PERMENEMAIL}`,
+                          description: `${item.PIPFULL} ${item.PERMENEMAIL}`,
                           status: "success",
                           duration: 4000,
                           isClosable: true,

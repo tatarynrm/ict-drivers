@@ -1,19 +1,23 @@
-import { Box, SimpleGrid, Spinner, Stack } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Box, Button, SimpleGrid, Spinner, Stack, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import CargoItem from "../../components/cards/CargoItem";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllZap } from "../../redux/slices/zap";
 import moment from "moment/moment";
 import "moment/locale/uk";
 import toTimestamp from "../../helpers/date";
+import { uniqKrainaZorKrainaR } from "../../helpers/uniqArrayOfZap";
 const Cargo = () => {
   const dispatch = useDispatch();
   const zap = useSelector((state) => state.zap.zap.items);
   const { status } = useSelector((state) => state.zap.zap);
+  const [krainaFilter,setKrainaFilter] = useState({})
   useEffect(() => {
     dispatch(fetchAllZap());
   }, []);
-
+const uniqKraina =   uniqKrainaZorKrainaR(zap);
+// console.log(uniqKraina);
+console.log(krainaFilter);
   return (
     <>
       {zap.length <= 0 ? (
@@ -40,6 +44,16 @@ const Cargo = () => {
           display={"flex"}
           flexDirection={"column"}
         >
+          <Box display={'flex'} gap={'10px'} flexWrap={'wrap'}>
+            {uniqKraina && uniqKraina.map(item =>{
+              return <Button onClick={()=>{
+                setKrainaFilter({
+                  krainaZav:item.countryZav ,
+                  krainaRozv: item.countryRozv
+                })
+              }}>{item.countryZav} - {item.countryRozv} </Button>
+            })}
+          </Box>
           <SimpleGrid
             spacing={5}
             templateColumns={[
@@ -51,6 +65,7 @@ const Cargo = () => {
           >
             {zap
               .filter((item) => item.DATUPDATE)
+              .filter(item => krainaFilter.length > 0 ? item.ZAVKRAINA === krainaFilter.krainaZav && item.ROZVKRAINA === krainaFilter.krainaRozv : item)
               .sort(
                 (a, b) => toTimestamp(b?.DATUPDATE) - toTimestamp(a?.DATUPDATE)
               )

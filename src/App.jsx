@@ -13,14 +13,12 @@ import Settings from "./pages/Settings/Settings";
 
 function App() {
   const dispatch = useDispatch();
-  // const isAuth = useSelector((state) => state.auth.isAuth);
   const token = window.localStorage.getItem("token");
   const [openModalLogin, setOpenModalLogin] = useState(false);
 
   useEffect(() => {
     token && dispatch(fetchAuthMe());
   }, [token]);
-
   return (
     <>
       <Header />
@@ -31,7 +29,6 @@ function App() {
           <Route exact path="/cargos" element={<Cargo />} />
           <Route exact path="/settings" element={<Settings />} />
         </Route>
-
         <Route path="/login" element={<Login />} />
       </Routes>
     </>
