@@ -51,20 +51,46 @@ const Home = () => {
   const dispatch = useDispatch();
   const [userLocation, setUserLocation] = useState([]);
   const sucessfulLookup = async (position) => {
+    // const { latitude, longitude } = position.coords;
+    // const data = await fetch(
+    //   `https://api.bigdatacloud.net/data/reverse-geocode-client?${latitude}&${longitude}&localityLanguage=uk`
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     const values = {
+    //       country: data.countryName,
+    //       city: data.city,
+    //       counter: 1,
+    //     };
+    //     setUserLocation(data);
+    //   });
     const { latitude, longitude } = position.coords;
-    const data = await fetch(
-      `https://api.bigdatacloud.net/data/reverse-geocode-client?${latitude}&${longitude}&localityLanguage=uk`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const values = {
-          country: data.countryName,
-          city: data.city,
-          counter: 1,
-        };
-        setUserLocation(data);
-      });
+    const baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json?language=uk';
+    const params = {
+        latlng: `${latitude},${longitude}`,
+        key: 'AIzaSyCL4bmZk4wwWYECFCW2wqt7X-yjU9iPG2o',
+    };
+    return axios.get(baseUrl, { params })
+        .then(response => {
+            if (response.status === 200) {
+                const result = response.data;
+                if (result.results.length > 0) {
+                    const address =  result.results[0];
+                    setUserLocation(address);
+                    return address;
+                } else {
+                    return 'Адресу не знайдено.';
+                }
+            } else {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+        })
+        .catch(error => {
+            console.error(error.message);
+            return 'Помилка при виконанні запиту.';
+        });
   };
+
   useEffect(() => {
     if (userData) {
       dispatch(fetchUser(userData?.user.KOD_UR));
@@ -79,7 +105,7 @@ const Home = () => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(sucessfulLookup);
   }, []);
-
+console.log(userLocation);
   return (
     <Stack
       width={["90%", "90%", "70%", "70%"]}
