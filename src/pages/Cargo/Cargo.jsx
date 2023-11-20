@@ -7,11 +7,13 @@ import moment from "moment/moment";
 import "moment/locale/uk";
 import toTimestamp from "../../helpers/date";
 import { uniqKrainaZorKrainaR } from "../../helpers/uniqArrayOfZap";
+import Flag from 'react-world-flags'
 const Cargo = () => {
   const dispatch = useDispatch();
   const zap = useSelector((state) => state.zap.zap.items);
   const { status } = useSelector((state) => state.zap.zap);
   const [krainaFilter,setKrainaFilter] = useState(null)
+  const [activeFilter,setActiveFilter] = useState(false)
   useEffect(() => {
     dispatch(fetchAllZap());
   }, []);
@@ -47,19 +49,25 @@ useEffect(()=>{
           display={"flex"}
           flexDirection={"column"}
         >
-          <Box display={'flex'} gap={'10px'} flexWrap={'wrap'}>
-            {uniqKraina && uniqKraina.map((item,idx) =>{
-              return <Button key={idx} color={"teal"} onClick={()=>{
-                setKrainaFilter({
-                  krainaZav:item.countryZav ,
-                  krainaRozv: item.countryRozv
-                })
-              }}>{item.countryZav} - {item.countryRozv} </Button>
-            })}
-            <Button onClick={()=> {
-                  return  setKrainaFilter(null)
-            }}>Скинути фільтр</Button>
-          </Box>
+<Box>
+  <Button colorScheme={activeFilter ? "red":"teal"} onClick={()=>setActiveFilter(val => !val)}>{activeFilter ? "Закрити фільтр":"Відкрити фільтр"}</Button>
+</Box>
+{activeFilter && <Box display={'flex'} gap={'10px'} flexWrap={'wrap'}>
+      
+      {uniqKraina && uniqKraina.sort((a,b) => a.countryZav - b.countryRozv).map((item,idx) =>{
+        return <Button key={idx} color={"teal"} onClick={()=>{
+          setKrainaFilter({
+            krainaZav:item.countryZav ,
+            krainaRozv: item.countryRozv
+          })
+        }}>
+         
+         <Flag width={"20px"} height={'20px'} code={item.countryZav.toLowerCase()}  />  {item.countryZav} - {item.countryRozv} <Flag width={"20px"} height={'20px'} code={item.countryRozv.toLowerCase()}  />  </Button>
+      })}
+      <Button onClick={()=> {
+            return  setKrainaFilter(null)
+      }}>Скинути фільтр</Button>
+    </Box>}
           <SimpleGrid
             spacing={5}
             templateColumns={[
