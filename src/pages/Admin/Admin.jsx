@@ -23,7 +23,6 @@ import { CloseIcon } from "@chakra-ui/icons";
 import AccountsInfo from "./components/AccountsInfo.jsx";
 const Admin = () => {
   const [companies, setCompanies] = useState([]);
-  const [createAccountVis, setCreateAccountVis] = useState(false);
   const [statisticAccounVis, setStatisticAccountVis] = useState(false);
   const [blockAccountVis, setBlockAccountVis] = useState(false);
   const [searchCompany, setSearchCompany] = useState("");
@@ -110,14 +109,10 @@ const Admin = () => {
           <TabPanel display={"flex"} flexDirection={"column"}>
             {/* input */}
 
-            <Box width={"100%"} display={"flex"} gap={"10px"}>
-              <Button onClick={() => setCreateAccountVis((val) => !val)}>
-                {createAccountVis ? "Закрити меню" : "Створити аккаунт"}
-              </Button>
-            </Box>
+
             {/* output */}
             <HStack marginTop={"20px"}>
-              {createAccountVis && (
+             
                 <Box width={"100%"}>
                   <FormControl
                     display={"flex"}
@@ -190,7 +185,7 @@ const Admin = () => {
                     )}
                   </FormControl>
                 </Box>
-              )}
+         
             </HStack>
           </TabPanel>
           <TabPanel>
