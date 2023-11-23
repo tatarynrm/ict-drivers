@@ -23,7 +23,8 @@ import {
   StatHelpText,
   StatArrow,
 } from "@chakra-ui/react";
-import axios from "../../utils/axios";
+import instance from "../../utils/axios";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTwoYearsData, fetchUser } from "../../redux/slices/user";
 import moment from "moment";

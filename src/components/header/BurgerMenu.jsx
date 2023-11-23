@@ -63,6 +63,12 @@ const BurgerMenu = ({ handleLogout }) => {
             <Link to={"/cargos"} onClick={onClose}>
               <Button width={"100%"}>Актуаульні завантаження</Button>
             </Link>
+            {userData?.user?.EMAIL === "admin@ict.lviv.ua" ? (
+              <Link to={"/admin"} onClick={onClose}>
+                <Button width={"100%"}>Адмін</Button>
+              </Link>
+            ) : null}
+
             <Divider />
             <Link to={"/settings"} onClick={onClose}>
               <Button

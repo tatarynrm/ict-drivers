@@ -10,11 +10,13 @@ import Transportation from "./pages/Transportation/Transportation";
 import Cargo from "./pages/Cargo/Cargo";
 
 import Settings from "./pages/Settings/Settings";
+import Admin from "./pages/Admin/Admin";
 
 function App() {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
   const [openModalLogin, setOpenModalLogin] = useState(false);
+  const userData = useSelector((state) => state.auth.data);
 
   useEffect(() => {
     token && dispatch(fetchAuthMe());
@@ -28,6 +30,9 @@ function App() {
           <Route exact path="/transpotation" element={<Transportation />} />
           <Route exact path="/cargos" element={<Cargo />} />
           <Route exact path="/settings" element={<Settings />} />
+          {userData?.user?.EMAIL === "admin@ict.lviv.ua" ? (
+            <Route exact path="/admin" element={<Admin />} />
+          ) : null}
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
