@@ -8,6 +8,7 @@ import { Login } from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import Transportation from "./pages/Transportation/Transportation";
 import Cargo from "./pages/Cargo/Cargo";
+import axios from './utils/axios'
 
 import Settings from "./pages/Settings/Settings";
 import Admin from "./pages/Admin/Admin";
@@ -21,6 +22,19 @@ function App() {
   useEffect(() => {
     token && dispatch(fetchAuthMe());
   }, [token]);
+console.log(userData);
+  useEffect(()=>{
+if (userData) {
+const activity = async ()=>{
+  try {
+    const data = await axios.post('/check-activity',{KOD_PERUS:userData?.user?.KOD})
+  } catch (error) {
+    console.log(error);
+  }
+}
+activity()
+}
+  },[userData])
   return (
     <>
       <Header />
