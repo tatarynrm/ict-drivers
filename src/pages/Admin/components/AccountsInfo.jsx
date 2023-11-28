@@ -43,6 +43,8 @@ const AccountsInfo = ({item}) => {
     <Collapse mt={4} in={isOpen}>
    <Box>
     <Text>Дата реєстрації: {moment(item.DATREESTR).format('LLL')}</Text>
+    <Text>Дата останнього входу: {moment(item.DATELASTENTRY).format('LLL')}</Text>
+    <Text>К-сть входів на сайт {item.COUNT}</Text>
    </Box>
         </Collapse>
 
