@@ -56,13 +56,22 @@ export const Login = () => {
           .max(20, "Занадто довгий логін"),
       })}
       onSubmit={async (values, actions) => {
-        const vals = { ...values };
-        // actions.resetForm();
-        const data = await dispatch(fetchAuth(vals));
-        if (data?.payload?.accessToken) {
-          window.localStorage.setItem("token", data.payload.accessToken);
-          navigate("/");
-        }
+try {
+  const vals = { ...values };
+  // actions.resetForm();
+  const data = await dispatch(fetchAuth(vals));
+  console.log('LOGIN DATA',data);
+  
+  if (data?.payload?.accessToken) {
+    window.localStorage.setItem("token", data.payload.accessToken);
+    navigate("/");
+  }
+} catch (error) {
+  console.log('ERRRRRRRRRRRRRRRRRRRRRRR',error);
+  
+}
+ 
+      
       }}
     >
       {(formik) => (

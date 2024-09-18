@@ -142,7 +142,8 @@ console.log(userLocation);
                   : ""}
               </Text>
             </Box>
-            <Divider />
+            <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>Виконано перевезень</Text>
+            {/* <Divider />
             <Box
               height={"auto"}
               display={"flex"}
@@ -151,12 +152,12 @@ console.log(userLocation);
               marginBottom={"10px"}
             >
               <Heading as="h3" size="md">
-                Виконано перевезень за весь період:
+              Перевезень за весь період:
               </Heading>
               <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
                 {user?.KP_ALL}
               </Text>
-            </Box>
+            </Box> */}
             <Divider />
             <Box
               height={"auto"}
@@ -165,12 +166,13 @@ console.log(userLocation);
               gap={"20px"}
               marginBottom={"10px"}
             >
-              <Heading as="h3" size="md">
-                Виконано перевезень за минулий рік:
-              </Heading>
-              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                   <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
                 {user?.KP_YEAR_PREV}
               </Text>
+              <Heading as="h3" size="md">
+                за минулий рік
+              </Heading>
+         
             </Box>
             <Divider />
             <Box
@@ -180,12 +182,13 @@ console.log(userLocation);
               gap={"20px"}
               marginBottom={"10px"}
             >
-              <Heading as="h3" size="md">
-                Виконано перевезень за поточний рік:
-              </Heading>
-              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                      <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
                 {user?.KP_YEAR_CURR}
               </Text>
+              <Heading as="h3" size="md">
+              за поточний рік
+              </Heading>
+      
               {/* {user?.KP_YEAR_CURR & user?.KP_YEAR_PREV &&
               user?.KP_YEAR_CUR > user?.KP_YEAR_PREV ? (
                 <Stat>
@@ -213,12 +216,13 @@ console.log(userLocation);
               gap={"20px"}
               marginBottom={"10px"}
             >
-              <Heading as="h3" size="md">
-                Виконано перевезень за минулий місяць:
-              </Heading>
-              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                    <Text alignItems={'flex-end'} textAlign={'righ'} fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
                 {user?.KP_MONTH_PREV}
               </Text>
+              <Heading as="h3" size="md">
+                за минулий місяць
+              </Heading>
+        
             </Box>
             <Divider />
             <Box
@@ -227,13 +231,15 @@ console.log(userLocation);
               alignItems={"center"}
               gap={"20px"}
               marginBottom={"10px"}
+            
             >
-              <Heading as="h3" size="md">
-                Виконано перевезень за поточний місяць:
-              </Heading>
-              <Text fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
+                     <Text textAlign={'right'} fontWeight={"bold"} fontSize={"20px"} color={"teal.300"}>
                 {user?.KP_MONTH_CURR}
               </Text>
+              <Heading as="h3" size="md">
+                за поточний місяць
+              </Heading>
+       
             </Box>
             <Divider />
             <Box
@@ -265,10 +271,10 @@ console.log(userLocation);
         height={"400px"}
       >
         <Tabs>
-          <TabList>
+          <TabList display={'flex'} justifyContent={'space-between'}>
             <Tab>Графік перевезень за поточний рік</Tab>
             <Tab>Графік перевезень за минулий рік</Tab>
-            <Tab>Два роки тому</Tab>
+            {/* <Tab>Два роки тому</Tab> */}
           </TabList>
 
           <TabPanels>

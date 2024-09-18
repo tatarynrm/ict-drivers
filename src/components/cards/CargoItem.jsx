@@ -27,7 +27,7 @@ const CargoItem = ({item}) => {
             Потреба в авто
           </Heading>
           <Text pt='2' fontSize='sm'>
-            <span style={{color:"green"}}>Необхідно {item.KILAMACT}</span> - <span style={{color:"red"}}>Закрито {item.KILAMZAKR}</span>
+            <span style={{color:"green"}}>Необхідно {item.KILAMACT}</span> 
           </Text>
         </Box>
         <Box>
@@ -43,11 +43,11 @@ const CargoItem = ({item}) => {
                 <Portal>
                   <MenuList>
                     <MenuItem>
-                      <a href={`tel:${item.PERMENTEL}`}>Зателефонувати</a>
+                      <a href={`tel:${item.PERMENTEL}`}>Зателефонувати - {item.PERMENTEL}</a>
                     </MenuItem>
                     <MenuItem>
                       {" "}
-                      <a href={`mailto:${item.PERMENEMAIL}`}>Написати E-mail</a>
+                      <a href={`mailto:${item.PERMENEMAIL}`}>Написати E-mail - {item.PERMENEMAIL}</a>
                     </MenuItem>
                     {/* <MenuItem onClick={() => {navigator.clipboard.writeText(item.PERMENTEL)}}> */}
                     <MenuItem

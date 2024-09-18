@@ -107,8 +107,8 @@ const TransportationItem = ({ item }) => {
           gap={"30px"}
           justifyContent={["space-between", "space-between", "start", "start"]}
         >
-          <Text>Завантаження {moment(item.ZAVDAT).format("L")}</Text>
-          <Text>Заявка № {item.NUM}</Text>
+          <Text>{moment(item.ZAVDAT).format("L")}</Text>
+          <Text>№ {item.NUM}</Text>
         </Box>
         <Text fontSize={["12px", "14px", "16px", "16px"]}>
           {item.ZAVPUNKT} - {item.ROZVPUNKT}

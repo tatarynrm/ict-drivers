@@ -1,6 +1,12 @@
 import {
   Box,
   Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Heading,
   Highlight,
   Input,
   InputGroup,
@@ -8,6 +14,7 @@ import {
   SimpleGrid,
   Spinner,
   Stack,
+  StackDivider,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -17,19 +24,28 @@ import {
   fetchNotEnoughDocs,
   fetchPayFullTransportations,
   fetchTransportations,
+  fetchTransportationsInfo,
 } from "../../redux/slices/transportations";
 import TransportationItem from "../../components/transportation/TransportationItem";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, ViewIcon } from "@chakra-ui/icons";
 import toTimestamp, { toTimeStamp } from "../../helpers/date";
 import { getBrowserType } from "../../helpers/checkBrowser";
+import moment from "moment/moment";
+import "moment/locale/uk";
+
+import CargoItem from "../../components/transportation/CargoItem";
 // import waitLogo from '../../assets/animation/Download_spinner.svg'
 const Transportation = () => {
   const [lesson, setLesson] = useState(true);
   const [topButtonsFilter, setTopButtonsFilter] = useState(null);
   const [searchFilter, setSearchFilter] = useState("");
   const { transportation } = useSelector((state) => state.transportation);
+ 
   const userData = useSelector((state) => state.auth.data);
   const dispatch = useDispatch();
+
+
+  console.log(transportation);  
   const [activeTransportation, setActiveTransportation] = useState(
     "Перевезення в процесі"
   );
@@ -37,6 +53,22 @@ const Transportation = () => {
     userData?.user?.KOD_UR &&
       dispatch(fetchTransportations(userData?.user?.KOD_UR));
   }, [userData]);
+  useEffect(() => {
+    userData?.user?.KOD_UR &&
+      dispatch(fetchTransportationsInfo(userData?.user?.KOD_UR));
+  }, [userData]);
+  useEffect(()=>{
+    if (userData) {
+    const activity = async ()=>{
+      try {
+        const data = await axios.post('/check-activity',{KOD_PERUS:userData?.user?.KOD,PAGE_NAME:"MY TRANSPORTATION"})
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    activity()
+    }
+      },[userData])
   return (
     <Stack
       width={["100%", "100%", "90%", "90%"]}
@@ -72,108 +104,37 @@ const Transportation = () => {
             <Input
               onChange={(e) => setSearchFilter(e.target.value)}
               width={["100%", "100%", "50%", "100%"]}
-              placeholder="Пошук за : № Рахунку, № Заявки, П.І.Б водія , номер авто..."
+              placeholder="Пошук за : Сума перевезення, П.І.Б водія , номер авто..."
               _placeholder={{ color: "lightgray" }}
             />
           </InputGroup>
         </Box>
-        <Box
-          flexDirection={["column", "column", "row", "row"]}
-          width={"100%"}
-          display={"flex"}
-          gap={"10px"}
-        >
-          <Button
-            fontSize={"12px"}
-            onClick={() => {
-              setActiveTransportation("Перевезення в процесі");
-              dispatch(fetchTransportations(userData?.user?.KOD_UR));
-            }}
-            colorScheme={
-              activeTransportation === "Перевезення в процесі"
-                ? "green"
-                : "teal"
-            }
-            variant="outline"
-          >
-            Перевезення в процесі
-          </Button>
-          <Button
-            onClick={() => {
-              setActiveTransportation("Оплачені перевезення");
-              dispatch(fetchPayFullTransportations(userData?.user?.KOD_UR));
-            }}
-            fontSize={"12px"}
-            colorScheme={
-              activeTransportation === "Оплачені перевезення" ? "green" : "teal"
-            }
-            variant="outline"
-          >
-            Оплачені перевезення
-          </Button>
-          <Button
-            onClick={() => {
-              setActiveTransportation("Некомплект документів");
-              dispatch(fetchNotEnoughDocs(userData?.user?.KOD_UR));
-            }}
-            fontSize={"12px"}
-            colorScheme={
-              activeTransportation === "Некомплект документів"
-                ? "green"
-                : "teal"
-            }
-            variant="outline"
-          >
-            Некомплект документів
-          </Button>
-          <Button
-            fontSize={"12px"}
-            onClick={() => {
-              setActiveTransportation("Перевезення в процесі");
-              dispatch(fetchTransportations(userData?.user?.KOD_UR));
-            }}
-            colorScheme="red"
-            variant="outline"
-          >
-            Скинути фільтр
-          </Button>
-        </Box>
+
       </Box>
-      <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, 1fr)">
-        {transportation.status === "loaded" ? (
-          transportation?.items
-            .filter((item) => {
-              return searchFilter.toLowerCase() === ""
-                ? item
-                : item.ZAVPUNKT.toLowerCase().includes(searchFilter) ||
-                    item.ROZVPUNKT?.toLowerCase().includes(searchFilter) ||
-                    item.ZAVPUNKT?.toUpperCase().includes(searchFilter) ||
-                    item.ROZVPUNKT?.toUpperCase().includes(searchFilter) ||
-                    item.ZAVPUNKT?.includes(searchFilter) ||
-                    item.ROZVPUNKT?.includes(searchFilter) ||
-                    item.VOD?.toLowerCase().includes(searchFilter) ||
-                    item.VOD?.toUpperCase().includes(searchFilter) ||
-                    item.NUM?.toString().includes(searchFilter);
-            })
-            .sort((a, b) => toTimestamp(b.DAT) - toTimestamp(a.DAT))
-            .filter((item) =>
-              topButtonsFilter === 1 ? item.DATDOCP === null : item
-            )
-            .filter((item) =>
-              topButtonsFilter === 2 ? item.DATPNPREESTR !== null : item
-            )
-            .filter((item) =>
-              topButtonsFilter === 3 ? item.PERNEKOMPLEKT !== null : item
-            )
-            .map((item, idx) => {
-              return <TransportationItem key={idx} item={item} />;
-            })
-        ) : (
+  
+      <SimpleGrid padding={[4,1]} spacing={3} columns={[1,2,3,5]} >
+       
+        
+
+        {transportation.status === 'loaded' ?  transportation?.info?.filter(item =>{
+                      return searchFilter.toLowerCase() === ""
+                      ? item
+                      : item.LINE1?.toLowerCase().includes(searchFilter) ||
+                          item.LINE1?.toLowerCase().includes(searchFilter) ||
+                          item.LINE3?.toLowerCase().includes(searchFilter) ||
+                          item.LINE3?.toLowerCase().includes(searchFilter) ||
+                          item.BORGP?.toString().toLowerCase().includes(searchFilter) ||
+                          item.BORGP?.toString().toLowerCase().includes(searchFilter) 
+                  
+        }).map((item,idx)=>{
+    return <CargoItem idx={idx} item={item}/>
+  }) : 
           <Stack
             display={"flex"}
             height={"80vh"}
             alignItems={"center"}
             justifyContent={"center"}
+            textAlign={'center'}
           >
             <Spinner
               thickness="4px"
@@ -185,8 +146,11 @@ const Transportation = () => {
               textAlign={"center"}
               justifyContent={"center"}
             />
-          </Stack>
-        )}
+          </Stack> } 
+
+
+
+
       </SimpleGrid>
     </Stack>
   );

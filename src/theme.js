@@ -18,8 +18,8 @@ const theme = {
     },
     colors: {
       transparent: "transparent",
-      black: "blue",
-      white: "blue",
+      black: "black",
+      white: "white",
       gray: {
         50: "#f7fafc",
         // ...

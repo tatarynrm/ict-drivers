@@ -12,8 +12,8 @@ const HeaderNav = () => {
   useEffect(() => {}, [userData?.user?.email]);
   return (
     <Box
-      display={["none", "none", "flex", "flex"]}
-      gap={"20px"}
+      display={["none", "none", "none", "flex"]}
+      gap={"10px"}
       justifyContent={"space-between"}
     >
       <NavLink to={"/"}>
@@ -32,14 +32,38 @@ const HeaderNav = () => {
           Мої перевезення
         </Button>
       </NavLink>
+      <NavLink to={"/pay-day"}>
+        <Button
+          variant="outline"
+          colorScheme={location.pathname === "/pay-day" ? "teal" : ""}
+        >
+          Графік оплат
+        </Button>
+      </NavLink>
+      <NavLink to={"/request-docs"}>
+        <Button
+          variant="outline"
+          colorScheme={location.pathname === "/request-docs" ? "teal" : ""}
+        >
+          Відправлені документи
+        </Button>
+        </NavLink>
       <NavLink to={"/cargos"}>
         <Button
           colorScheme={location.pathname === "/cargos" ? "teal" : "ghost"}
           variant="outline"
         >
-          Актуаульні завантаження
+          Актуальні завантаження
         </Button>
       </NavLink>
+      {/* <NavLink to={"/cargos"}>
+        <Button
+          colorScheme={location.pathname === "/cargos" ? "teal" : "ghost"}
+          variant="outline"
+        >
+          Кореспонденція
+        </Button>
+      </NavLink> */}
       {userData?.user?.EMAIL === "admin@ict.lviv.ua" ? (
         <NavLink to={"/admin"}>
           <Button

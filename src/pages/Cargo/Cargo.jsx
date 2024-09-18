@@ -8,12 +8,14 @@ import "moment/locale/uk";
 import toTimestamp from "../../helpers/date";
 import { uniqKrainaZorKrainaR } from "../../helpers/uniqArrayOfZap";
 import Flag from 'react-world-flags'
+import axios from '../../utils/axios'
 const Cargo = () => {
   const dispatch = useDispatch();
   const zap = useSelector((state) => state.zap.zap.items);
   const { status } = useSelector((state) => state.zap.zap);
   const [krainaFilter,setKrainaFilter] = useState(null)
   const [activeFilter,setActiveFilter] = useState(false)
+  const userData = useSelector(state => state.auth.data)
   useEffect(() => {
     dispatch(fetchAllZap());
   }, []);
@@ -23,6 +25,18 @@ console.log(krainaFilter);
 useEffect(()=>{
 
 },[krainaFilter])
+useEffect(()=>{
+  if (userData) {
+  const activity = async ()=>{
+    try {
+      const data = await axios.post('/check-activity',{KOD_PERUS:userData?.user?.KOD,PAGE_NAME:"CARGO"})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  activity()
+  }
+    },[userData])
   return (
     <>
       {zap.length <= 0 ? (

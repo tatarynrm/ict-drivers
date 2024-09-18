@@ -30,21 +30,24 @@ const UserProfile = ({ handleLogout }) => {
         minW={0}
       >
         <Avatar
-          size={"sm"}
-          src={"https://avatars.dicebear.com/api/male/username.svg"}
+          size={"md"}
+          name={`${userData?.user?.PRIZV} ${userData?.user?.NAME}`}
+         
+          // src={"https://avatars.dicebear.com/api/male/username.svg"}
         />
       </MenuButton>
       <MenuList alignItems={"center"}>
         <br />
         <Center>
           <Avatar
-            size={"s"}
-            src={"https://avatars.dicebear.com/api/male/username.svg"}
+            size={"md"}
+         name={`${userData?.user?.PRIZV} ${userData?.user?.NAME}`}
           />
         </Center>
 
-        <br />
-        <MenuItem>{userData?.user?.NUR}</MenuItem>
+      
+        <MenuItem color={'green.200'}  cursor={"pointer"}>Користувач: {`${userData?.user?.PRIZV} ${userData?.user?.NAME}`}</MenuItem>
+        <MenuItem color={'red.200'}   cursor={"pointer"}>Компанія: {userData?.user?.NUR}</MenuItem>
         <Center>
           <p>{userData?.user?.email}</p>
         </Center>

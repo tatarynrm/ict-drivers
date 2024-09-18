@@ -4,12 +4,14 @@ import axiosMain from "axios";
 export const fetchAuth = createAsyncThunk(
   "auth/fetchUserData",
   async (params) => {
+
     try {
-      const { data } = await axios.post("/login", params);
+      const  {data}  = await axios.post("/login", params);
 
       return data;
     } catch (error) {
-      console.log(error);
+      console.log('ERROR',error);
+      return error
     }
   }
 );

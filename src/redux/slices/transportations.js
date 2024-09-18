@@ -12,6 +12,17 @@ export const fetchTransportations = createAsyncThunk(
     }
   }
 );
+export const fetchTransportationsInfo = createAsyncThunk(
+  "cargos/fetchTransportationsInfo",
+  async (KOD) => {
+    try {
+      const { data } = await axios.post("/transportation-info",{KOD});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 export const fetchPayFullTransportations = createAsyncThunk(
   "cargos/fetchPayFullTransportations",
   async (KOD) => {
@@ -82,6 +93,7 @@ export const fetchMyZap = createAsyncThunk(
 const initialState = {
   transportation: {
     items: [],
+    info:[],
     groups: [],
     loading: "loading",
   },
@@ -178,6 +190,18 @@ const transportationSlice = createSlice({
     },
     [fetchNotEnoughDocs.rejected]: (state) => {
       state.transportation.items = [];
+      state.transportation.status = "error";
+    },
+    [fetchTransportationsInfo.pending]: (state) => {
+      state.transportation.info = [];
+      state.transportation.status = "loading";
+    },
+    [fetchTransportationsInfo.fulfilled]: (state, action) => {
+      state.transportation.info = action.payload;
+      state.transportation.status = "loaded";
+    },
+    [fetchTransportationsInfo.rejected]: (state) => {
+      state.transportation.info = [];
       state.transportation.status = "error";
     },
   },

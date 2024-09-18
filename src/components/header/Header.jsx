@@ -106,7 +106,7 @@ export default function Nav() {
             <Stack direction={"row"} spacing={7} alignItems={"center"}>
               {token ? (
                 <Menu>
-                  <Box display={["none", "none", "block", "block"]}>
+                  <Box display={["none", "none", "none", "block"]}>
                     <UserProfile handleLogout={handleLogout} />
                   </Box>
                 </Menu>

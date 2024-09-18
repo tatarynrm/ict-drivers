@@ -11,6 +11,12 @@ import {
   FormLabel,
   FormHelperText,
   Button,
+  Card,
+  CardHeader,
+  Heading,
+  CardBody,
+  CardFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import InputMask from "react-input-mask";
@@ -18,7 +24,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BsTelegram } from "react-icons/bs";
 import axios from "../../utils/axios";
+import CustomTooltip from "../../components/tooltip/CustomTooltip";
+import { InfoIcon } from "@chakra-ui/icons";
+import PerUserCreate from "../../components/per-user-create/PerUserCreate";
 const Settings = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [newUserCreate, setNewUserCreate] = useState(false)
+  const [accounts, setAccounts] = useState([])
   const userData = useSelector((state) => state.auth.data);
   const [tgConnectVis, setTgConnectVis] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("+380"); // State to hold the phone number
@@ -26,6 +38,9 @@ const Settings = () => {
   const [emailNot, setEmailNot] = useState(false);
   const [tgNot, setTgNot] = useState(false);
   const [changeNumberAgain, setChangeNumberAgain] = useState(false);
+
+  console.log('USER_DATA', userData);
+
   const handleEmailSwitch = () => {
     setEmailNot((prevValue) => !prevValue);
     updateEmailNotStatus();
@@ -37,6 +52,23 @@ const Settings = () => {
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
   };
+
+  const getAccounts = async () => {
+    try {
+      const data = await axios.post('/user-accounts-admin', { kod_ur: userData?.user?.KOD_UR });
+      console.log(data);
+
+      if (data.status === 200) {
+        setAccounts(data.data)
+      } else {
+        alert(1)
+      }
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
 
   const updateTgNotStatus = async () => {
     try {
@@ -109,9 +141,12 @@ const Settings = () => {
   useEffect(() => {
     setEmailNot(userData?.user?.EMAILNOT === 1 ? true : false);
   }, [userData]);
-  useEffect(() => {}, [userData]);
-  useEffect(() => {}, [tgNot, emailNot]);
-  useEffect(() => {}, [userData?.user?.TG_ID]);
+  useEffect(() => { }, [userData]);
+  useEffect(() => { }, [tgNot, emailNot]);
+  useEffect(() => { }, [userData?.user?.TG_ID]);
+  useEffect(() => {
+    getAccounts()
+  }, [userData?.user?.KOD_UR]);
 
   return (
     <Stack
@@ -122,6 +157,48 @@ const Settings = () => {
       flexDirection={"column"}
     >
       <Stack>
+        <Box display={'flex'} flexDir={'column'} gap={10}>
+          {userData?.user?.PERADMIN === 1 &&
+
+            <Stack>
+              <Button onClick={onOpen} width={'10%'} colorScheme="teal">Надати доступ</Button>
+              <Text color={'orange.200'} fontSize={'14px'}>*Створити нового користувача*</Text>
+            </Stack>
+
+          }
+          {userData?.user?.PERADMIN === 1 ?
+
+            accounts && accounts?.map((item, idx) => {
+              return <Card position={'relative'} display={'flex'} flexDir={['column', 'column', 'row']} style={{ backgroundColor: item.PERADMIN === 1 ? 'green' : '' }} key={idx} align='center'>
+                {item.PERADMIN === 1 &&
+
+
+                  <CustomTooltip label={'Ви адміністратор аккаунтів.Можете створювати аккаунти для своїх співробітників.'}>
+                    <Text display={'flex'} alignItems={'center'} gap={1} cursor={'pointer'} top={0} left={1} position={'absolute'}><InfoIcon /> Administrator</Text>
+                  </CustomTooltip>
+
+                }
+                <CardHeader width={['100%','100%','50%','30%']} alignItems={'center'} textAlign={'center'}>
+                  <Heading size='md'>{item.PRIZV} {item.NAME} {item.POBAT}</Heading>
+                </CardHeader>
+                <CardBody >
+                  <Text>Логін: {item.EMAIL}</Text>
+                  <Text>Пароль: {item.PWD}</Text>
+                </CardBody>
+                <CardBody >
+                  <Text>Телефон: {item.PHONE_NUMBER}</Text>
+
+                </CardBody>
+
+                <CardFooter>
+                  <Button colorScheme='blue'>Редагувати</Button>
+                </CardFooter>
+              </Card>
+            }) : null
+          }
+        </Box>
+      </Stack>
+      {/* <Stack>
         <FormControl display="flex" alignItems="center">
           <FormLabel htmlFor="email-alerts" mb="0">
             Підписатись на E-mail сповіщення
@@ -261,7 +338,11 @@ const Settings = () => {
             </Box>
           </Tooltip>
         )}
-      </Stack>
+      </Stack> */}
+
+
+
+     <PerUserCreate isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
     </Stack>
   );
 };

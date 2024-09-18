@@ -30,7 +30,7 @@ const BurgerMenu = ({ handleLogout }) => {
   const btnRef = useRef();
   const userData = useSelector((state) => state.auth.data);
   return (
-    <Box display={["block", "block", "none", "none"]}>
+    <Box display={["block", "block", "block", "none"]}>
       <IconButton
         colorScheme="teal"
         ref={btnRef}
@@ -59,6 +59,12 @@ const BurgerMenu = ({ handleLogout }) => {
             </Link>
             <Link to={"/transpotation"} onClick={onClose}>
               <Button width={"100%"}>Мої перевезення</Button>
+            </Link>
+            <Link to={"/pay-day"} onClick={onClose}>
+              <Button width={"100%"}>Графік оплат</Button>
+            </Link>
+            <Link to={"/request-docs"} onClick={onClose}>
+              <Button width={"100%"}>Відправлені документи</Button>
             </Link>
             <Link to={"/cargos"} onClick={onClose}>
               <Button width={"100%"}>Актуаульні завантаження</Button>
