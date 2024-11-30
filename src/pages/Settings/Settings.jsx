@@ -39,7 +39,7 @@ const Settings = () => {
   const [tgNot, setTgNot] = useState(false);
   const [changeNumberAgain, setChangeNumberAgain] = useState(false);
 
-  console.log('USER_DATA', userData);
+  const [hidePassword,setHidePassword] = useState(true)
 
   const handleEmailSwitch = () => {
     setEmailNot((prevValue) => !prevValue);
@@ -56,7 +56,7 @@ const Settings = () => {
   const getAccounts = async () => {
     try {
       const data = await axios.post('/user-accounts-admin', { kod_ur: userData?.user?.KOD_UR });
-      console.log(data);
+      
 
       if (data.status === 200) {
         setAccounts(data.data)
@@ -161,13 +161,12 @@ const Settings = () => {
           {userData?.user?.PERADMIN === 1 &&
 
             <Stack>
-              <Button onClick={onOpen} width={'10%'} colorScheme="teal">Надати доступ</Button>
+              <Button onClick={onOpen} width={'180px'} colorScheme="teal">Надати доступ</Button>
               <Text color={'orange.200'} fontSize={'14px'}>*Створити нового користувача*</Text>
             </Stack>
 
           }
           {userData?.user?.PERADMIN === 1 ?
-
             accounts && accounts?.map((item, idx) => {
               return <Card position={'relative'} display={'flex'} flexDir={['column', 'column', 'row']} style={{ backgroundColor: item.PERADMIN === 1 ? 'green' : '' }} key={idx} align='center'>
                 {item.PERADMIN === 1 &&
@@ -183,7 +182,7 @@ const Settings = () => {
                 </CardHeader>
                 <CardBody >
                   <Text>Логін: {item.EMAIL}</Text>
-                  <Text>Пароль: {item.PWD}</Text>
+                  <Text onClick={()=>setHidePassword(val => !val)} cursor={'context-menu'}>Пароль: {!hidePassword ? item.PWD : "**********"}</Text>
                 </CardBody>
                 <CardBody >
                   <Text>Телефон: {item.PHONE_NUMBER}</Text>

@@ -7,5 +7,4 @@ export const validatePerUserCreate = Yup.object({
     last_name:Yup.string().required(`Вкажіть по-батькові`).max(20,'Забагато символів'),
     surname:Yup.string().required(`Вкажіть прізвище`).max(20,'Забагато символів'),
     phone_number: Yup.string().matches(/^[0-9]{10}$/, "Номер телефону повинен складатися з 10 цифр").required(`Обов'язкове поле`),
-
 })

@@ -23,6 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAuth } from "../../redux/slices/auth";
 import axios from "../../utils/axios";
 import { InfoIcon, PhoneIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { FaUserEdit } from "react-icons/fa";
+import RegisterButton from "../../components/register-button/RegisterButton";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -49,29 +51,26 @@ export const Login = () => {
         email: Yup.string()
           .required("Логін обов'язкове поле")
           .min(4, "Занадто короткий логін")
-          .max(20, "Занадто довгий логін"),
+          .max(70, "Занадто довгий логін"),
         password: Yup.string()
           .required("Пароль обов'язкове поле")
           .min(4, "Занадто короткий логін")
           .max(20, "Занадто довгий логін"),
       })}
       onSubmit={async (values, actions) => {
-try {
-  const vals = { ...values };
-  // actions.resetForm();
-  const data = await dispatch(fetchAuth(vals));
-  console.log('LOGIN DATA',data);
-  
-  if (data?.payload?.accessToken) {
-    window.localStorage.setItem("token", data.payload.accessToken);
-    navigate("/");
-  }
-} catch (error) {
-  console.log('ERRRRRRRRRRRRRRRRRRRRRRR',error);
-  
-}
- 
-      
+        try {
+          const vals = { ...values };
+          // actions.resetForm();
+          const data = await dispatch(fetchAuth(vals));
+          console.log("LOGIN DATA", data);
+
+          if (data?.payload?.accessToken) {
+            window.localStorage.setItem("token", data.payload.accessToken);
+            navigate("/");
+          }
+        } catch (error) {
+          console.log("ERRRRRRRRRRRRRRRRRRRRRRR", error);
+        }
       }}
     >
       {(formik) => (
@@ -102,7 +101,7 @@ try {
             isInvalid={formik.errors.password && formik.touched.password}
             position={"relative"}
           >
-            <FormLabel>Паролль</FormLabel>
+            <FormLabel>Пароль</FormLabel>
             <InputGroup size="md">
               <Input
                 type={show ? "text" : "password"}
@@ -150,13 +149,7 @@ try {
                 Технічна підтримка
               </a>
             </Button>
-            <Tooltip
-              hasArrow
-              label={`Якщо ви співпрацюєте з компанією ICT-Захід,- натисніть на 'Технічна підтримка' для реєстрації на даному сайті.`}
-              placement="bottom"
-            >
-              <InfoIcon cursor={"pointer"} />
-            </Tooltip>
+            <RegisterButton />
           </Stack>
         </VStack>
       )}

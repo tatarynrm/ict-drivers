@@ -14,6 +14,6 @@ export const uniqKrainaZorKrainaR = (arr) => {
   const uniqueArray = Array.from(
     new Set(krainaFilter.map((obj) => JSON.stringify(obj)))
   ).map((str) => JSON.parse(str));
-  console.log(uniqueArray);
+
   return uniqueArray;
 };

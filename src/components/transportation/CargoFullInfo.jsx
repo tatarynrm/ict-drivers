@@ -13,7 +13,7 @@ import { HiOutlineDocumentRemove } from "react-icons/hi";
 const CargoFullInfo = ({ onClose, isOpen, fullInfo }) => {
   const item = fullInfo;
 
-  console.log('DSADSA', item);
+
   return (
     <>
 
@@ -64,21 +64,21 @@ const CargoFullInfo = ({ onClose, isOpen, fullInfo }) => {
               <Divider />
 
               <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-              <Flex alignItems={'center'} gap={'4px'}>
-       
-         <FcMoneyTransfer size={30}/>
-                <Text display={'flex'} gap={'10px'}>
-                  Вартість перевезення: <Text>{item.PERSUMA} <span style={{ color: 'greenyellow' }}>{item.VALUTA.toLowerCase()}</span></Text>
-                </Text>
-
-         </Flex>
-
                 <Flex alignItems={'center'} gap={'4px'}>
+
+                  <FcMoneyTransfer size={30} />
+                  <Text display={'flex'} gap={'10px'}>
+                    Вартість перевезення: <Text>{item.PERSUMA} <span style={{ color: 'greenyellow' }}>{item.VALUTA.toLowerCase()}</span></Text>
+                  </Text>
+
+                </Flex>
+
+                {item.DATPOPLPLAN && <Flex alignItems={'center'} gap={'4px'}>
                   <FcOvertime size={30} />
                   <Text display={'flex'} gap={'10px'}>
                     Планова дата оплати {moment(item.DATPOPLPLAN).format('LL')}
                   </Text>
-                </Flex>
+                </Flex>}
               </Box>
             </Box>
 
@@ -92,30 +92,30 @@ const CargoFullInfo = ({ onClose, isOpen, fullInfo }) => {
             <Divider marginTop={'20px'} />
 
 
-          <Flex marginTop={'20px'} gap={'20px'} flexDirection={'column'}>
-          <Heading marginBottom={'20px'} size={'lg'}>Додаткова інформація</Heading>
+            <Flex marginTop={'20px'} gap={'20px'} flexDirection={'column'}>
+              <Heading marginBottom={'20px'} size={'lg'}>Додаткова інформація</Heading>
 
-<Box  display={'flex'} alignItems={'center'} flexDirection={'row'} gap={'10px'}>
-<FcDocument size={30} />
-<Text fontSize={'20px'}>Отримано пакет документів: {moment(item.DATDOCP).format('LL')}</Text>
-</Box>
+              {item.DATDOCP && <Box display={'flex'} alignItems={'center'} flexDirection={'row'} gap={'10px'}>
+                <FcDocument size={30} />
+                <Text fontSize={'20px'}>Отримано пакет документів: {moment(item.DATDOCP).format('LL')}</Text>
+              </Box>}
 
-{item.PERNEKOMPLEKT && 
-  <Box  display={'flex'} alignItems={'center'} flexDirection={'row'} gap={'10px'}>
-<HiOutlineDocumentRemove fill='red'  size={30} />
-<Text fontSize={'20px'}>Некомплектність документів: {item.PERNEKOMPLEKT}</Text>
-</Box>
-}
-{item.PERAKTPRET && 
-  <Box  display={'flex'} alignItems={'center'} flexDirection={'row'} gap={'10px'}>
-<HiOutlineDocumentRemove fill='red'  size={30} />
-<Text fontSize={'20px'}>Помилки АКТ/Рах: {item.PERAKTPRET}</Text>
-</Box>
-}
-    
+              {item.PERNEKOMPLEKT &&
+                <Box display={'flex'} alignItems={'center'} flexDirection={'row'} gap={'10px'}>
+                  <HiOutlineDocumentRemove fill='red' size={30} />
+                  <Text fontSize={'20px'}>Некомплектність документів: {item.PERNEKOMPLEKT}</Text>
+                </Box>
+              }
+              {item.PERAKTPRET &&
+                <Box display={'flex'} alignItems={'center'} flexDirection={'row'} gap={'10px'}>
+                  <HiOutlineDocumentRemove fill='red' size={30} />
+                  <Text fontSize={'20px'}>Помилки АКТ/Рах: {item.PERAKTPRET}</Text>
+                </Box>
+              }
 
 
-          </Flex>
+
+            </Flex>
             <Divider marginTop={'20px'} />
 
 

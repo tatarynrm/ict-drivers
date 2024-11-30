@@ -106,7 +106,7 @@ const Home = () => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(sucessfulLookup);
   }, []);
-console.log(userLocation);
+
   return (
     <Stack
       width={["90%", "90%", "70%", "70%"]}

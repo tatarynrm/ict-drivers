@@ -27,23 +27,26 @@ const PayItem = ({ item, onOpen, setPayInfo }) => {
         try {
             const data = await axios.post('/transportation-info', { KOD: userData?.user?.KOD_UR, DATE: date })
 
-            console.log(data);
+          
             setPayInfo(data.data)
             onOpen()
         } catch (error) {
             console.log(error);
         }
     }
+
+
+    
     return (
-        <Card padding={'6px 6px 20px 6px'} position={'relative'}>
+        <Card  padding={'6px 6px 20px 6px'} position={'relative'}>
 
             <CardHeader padding={'2px'}>
-                <Heading color={'	#FFE5B4'} size='xs'>{item.LINE1}</Heading>
+                <Heading color={'#FFE5B4'} size='xs'>{item.LINE1}</Heading>
             </CardHeader>
-            <CardBody padding={'1px'}  >
-                <Stack display={'flex'} flexDirection={['column', 'column', 'row']} alignItems={'center'} spacing='4'>
+            <CardBody width={'100%'} padding={'1px'}  >
+                <Stack display={'flex'} flexDirection={['column', 'column', 'column']} alignItems={'center'}  width={'100%'} spacing='4'>
 
-                    <Box width={'30%'}>
+                    <Box width={'100%'}>
 
                         <Text size='xs'>
                             {item.date}
@@ -56,10 +59,10 @@ const PayItem = ({ item, onOpen, setPayInfo }) => {
                     </Box>
 
 
-                    <Box display={'flex'} gap={'10px'} width={['100%', '50%', '30%']}>
+                    <Box display={'flex'}  gap={'10px'} width={['100%', '50%', '100%']} flexWrap={'wrap'}>
 
                         {item.objects?.map((item, idx) => {
-                            return <Box width={'100%'} display={'flex'} flexDirection={'column'} key={idx}>
+                            return <Box width={'30%'} display={'flex'} flexDirection={'column'} key={idx}>
                                 <Heading size={'sm'}>{item.NFIRMA}   </Heading>
                                 <Text color={'#FFE5B4'}>{item.KILZAY > 1 && item.KILZAY} {item.KILZAY > 1 && 'перевезень'}</Text>
                                 <Text color={'green.200'}>{item.BORG} {item.IDV}</Text>
@@ -69,10 +72,10 @@ const PayItem = ({ item, onOpen, setPayInfo }) => {
 
                     </Box>
 
-                    <Box>
+                    <Box width={'100%'}>
 
                         {item.objects?.map((item, idx) => {
-                            return <Text key={idx}>Рах. № {item.NUMRAHP} від {moment(item.DATRAHP).format('L')} ({item.NFIRMA})</Text>
+                            return <Text color={item.PERNEKOMPLEKT ? "red" : "white"} key={idx}>Рах. № {item.NUMRAHP} від {moment(item.DATRAHP).format('L')} ({item.NFIRMA}) {item.PERNEKOMPLEKT && item.PERNEKOMPLEKT}</Text>
                         })}
                     </Box>
 

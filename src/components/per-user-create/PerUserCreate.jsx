@@ -14,14 +14,13 @@ import {
   } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
-import TextField from '../form-items/TextField';
+import useCustomToast from './../../hooks/useCustomToasts';
 import { Form, Formik } from 'formik';
 import axios from '../../utils/axios'
-import PhoneNumberField from '../form-items/PhoneNumberField';
-import SelectField from '../form-items/SelectField';
-import { validatePerUserCreate } from '../../validations/perUserValidation';
-import useCustomToast from '../../hooks/useCustomToasts';
 import { soundUserRegisterError, soundUserRegisterSuccess } from '../../helpers/soundEffects';
+import { validatePerUserCreate } from './../../validations/perUserValidation';
+import TextField from '../../components/form-items/TextField'
+import PhoneNumberField from '../../components/form-items/PhoneNumberField'
 const PerUserCreate = ({isOpen, onOpen, onClose }) => {
     const userData = useSelector(state => state?.auth?.data)
     const toast = useCustomToast();
@@ -86,6 +85,7 @@ setTimeout(()=>{
      pwd:'',
      phone_number:'',
      per_admin:0,
+     is_admin:0,
      kod_ur:userData?.user?.KOD_UR
     }}
     validationSchema={validatePerUserCreate}

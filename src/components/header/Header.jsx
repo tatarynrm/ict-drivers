@@ -39,11 +39,13 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
 import { useCookies } from "react-cookie";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../../assets/logo_zakhid.svg";
 import BurgerMenu from "./BurgerMenu";
 import UserProfile from "./UserProfile";
 import HeaderNav from "./HeaderNav";
+import OfferDialog from "../offer/OfferDialog";
+import { logout } from "../../redux/slices/auth";
 const NavLink = (props) => {
   const { children } = props;
   return (
@@ -72,6 +74,7 @@ export default function Nav() {
   const token = window.localStorage.getItem("token");
   const btnRef = useRef();
   const [placement, setPlacement] = useState("left");
+  const dispatch = useDispatch()
   const logoutFromAccount = () => {
     // dispatch(logout());
     window.localStorage.clear();
@@ -80,7 +83,9 @@ export default function Nav() {
   const handleLogout = async () => {
     await axios.post("/logout");
     window.localStorage.clear();
+    dispatch(logout())
     navigate("/login");
+ 
   };
 
   return (
@@ -113,6 +118,7 @@ export default function Nav() {
               ) : null}
             </Stack>
           </Flex>
+  
           {token && <BurgerMenu handleLogout={handleLogout} />}
         </Flex>
       </Box>

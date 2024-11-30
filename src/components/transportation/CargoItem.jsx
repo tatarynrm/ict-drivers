@@ -1,6 +1,7 @@
 import { ViewIcon } from '@chakra-ui/icons'
 import { Box, Button, Card, CardBody, CardFooter, CardHeader, Heading, Stack, StackDivider, Text, Tooltip, useDisclosure } from '@chakra-ui/react'
 import moment from 'moment';
+import "moment/locale/uk";
 import React, { useState } from 'react'
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import { HiOutlineDocumentMinus } from "react-icons/hi2"
@@ -19,7 +20,7 @@ import { HiOutlineDocumentMagnifyingGlass } from "react-icons/hi2";
 import "moment/locale/uk";
 import CargoFullInfo from './CargoFullInfo';
 import axios from '../../utils/axios'
-const CargoItem = ({ item,idx }) => {
+const CargoItem = ({ item,idx,listType }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [fullInfo, setFullInfo] = useState([])
 
@@ -38,9 +39,11 @@ setFullInfo(data[0])
     getFullInfo(item.KOD)
   }
 
+
+  
   return (
     <>
-      <Card idx={idx}  padding={'6px 6px 20px 6px'} position={'relative'}>
+      <Card backgroundColor={    item.BORGP <= 0 ? 'green.700' : 'gray.700'  } idx={idx}  padding={'6px 6px 20px 6px'} position={'relative'}>
         <Box position={'absolute'} bottom={'4'} display={'flex'} gap={'10px'}>
 
           <Tooltip fontFamily={'fantasy'} label={item.DATDOCP === null ? 'Документи ще не надійшли' : `Документи отримано ${moment(item.DATDOCP).format('LL')}`} aria-label='A tooltip'>
@@ -95,15 +98,15 @@ setFullInfo(data[0])
         </CardHeader>
         <CardBody padding={'1px'}>
           <Stack divider={<StackDivider />} spacing='4'>
-            <Box>
+            <Box textAlign={'left'} alignItems={'center'} width={'100%'} display={listType === 'list' && 'flex'} justifyContent={ listType === 'list' && 'space-around'} >
               <Text size='xs'>
                 {item.LINE2}
               </Text>
-              <Text pt='1' fontSize='sm'>
+              <Text  pt='1' fontSize='sm'>
                 {item.LINE3}
               </Text>
-              <Text color={'green.200'} pt='1' fontSize='sm'>
-                {item.BORGP} {item.IDV}
+              <Text  color={'red.400'} pt='1' fontSize='sm'>
+               {item.BORGP > 0 ?  `${item.BORGP} ${item.IDV}` :`${item.PERSUMA} - Опл(${moment(item.DATPOPLFAKT).format('LL')})` }
               </Text>
             </Box>
 

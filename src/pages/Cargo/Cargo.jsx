@@ -20,8 +20,8 @@ const Cargo = () => {
     dispatch(fetchAllZap());
   }, []);
 const uniqKraina =   uniqKrainaZorKrainaR(zap);
-// console.log(uniqKraina);
-console.log(krainaFilter);
+
+
 useEffect(()=>{
 
 },[krainaFilter])

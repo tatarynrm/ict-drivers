@@ -4,6 +4,9 @@ import axios from '../../utils/axios';
 import { useSelector } from 'react-redux';
 import PayItem from '../../components/pay-day/PayItem';
 import PayModal from '../../components/pay-day/PayModal';
+import toTimestamp from '../../helpers/date';
+import parseDate from '../../helpers/parseDate';
+import useVisitRecord from '../../hooks/useVisitRecord';
 const PayDay = () => {
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.data);
@@ -14,7 +17,7 @@ const PayDay = () => {
   const getPayDays = async () => {
     try {
       const data = await axios.post('/pay', { KOD: userData?.user?.KOD_UR })
-      console.log(data);
+   
       if (data) {
         setData(data.data.dataArray)
       }
@@ -25,10 +28,14 @@ const PayDay = () => {
   useEffect(() => {
     if (userData) {
       getPayDays()
+     
     }
   }, [userData])
 
-  console.log('PAY',payInfo);
+
+
+
+  
   return (
     <Stack
       width={["100%", "100%", "90%", "90%"]}
@@ -38,10 +45,7 @@ const PayDay = () => {
       flexDirection={['column']}
       padding={['10px']}
       >
-
-
-
-      {data && data.map((item, idx) => {
+      {data && data.filter(item => item).sort((a,b) => parseDate(a.date) - parseDate(b.date)).map((item, idx) => {
         return <PayItem setPayInfo={setPayInfo} onOpen={onOpen} key={idx} item={item} />
       })}
 
