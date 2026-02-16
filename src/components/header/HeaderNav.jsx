@@ -114,7 +114,7 @@ const HeaderNav = () => {
     { to: "/cargos", label: "Актуальні завантаження", isAdminRequired: false },
     { to: "/admin", label: "Адмін", isAdminRequired: true },
   ];
-console.log(location.pathname);
+
 
   useEffect(() => {
     // Викликаємо recordVisit тільки один раз для нового шляху

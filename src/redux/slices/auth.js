@@ -7,6 +7,7 @@ export const fetchAuth = createAsyncThunk(
 
     try {
       const  {data}  = await axios.post("/login", params);
+console.log('DATA LOGIN ',data);
 
       return data;
     } catch (error) {

@@ -7,9 +7,9 @@ const useVisitRecord = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-
+const userData = useSelector((state) => state.auth.data);
   // Отримуємо компанію з Redux store
-  const company = useSelector(state => state?.auth?.data?.user?.KOD_UR);
+  const company = useSelector(state => state?.auth?.data?.user?.NUR);
   
   // Отримуємо поточний шлях сторінки через useLocation
   const location = useLocation();
@@ -27,20 +27,23 @@ const useVisitRecord = () => {
     setSuccess(false);
 
     try {
-      // Відправляємо запит для запису відвідування
-      const response = await axios.post("/visit/record", { page, company });
-      if (response.status === 200 && response.data.success) {
-        setSuccess(true);
-      } else {
-        throw new Error("Failed to record visit");
-      }
+if (userData?.user?.ISADMIN !== 1) {
+        // Відправляємо запит для запису відвідування
+        const response = await axios.post("/visit/record", { page, company });
+        if (response.status === 200 && response.data.success) {
+          setSuccess(true);
+        } else {
+          throw new Error("Failed to record visit");
+        }
+}
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
-
+  console.log('USER DATA',userData);
+  
   return {
     recordVisit,
     loading,

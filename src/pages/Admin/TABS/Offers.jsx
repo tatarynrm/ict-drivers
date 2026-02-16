@@ -12,7 +12,7 @@ const Offers = () => {
   // Виклик API для отримання пропозицій з пагінацією
   const { data, error, isLoading } = useGetOffersQuery({ page, limit });
 
-  console.log("OFFERS DATA", data);
+
 
   // Обробники кнопок пагінації
   const handleNextPage = () => {
